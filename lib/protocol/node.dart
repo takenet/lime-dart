@@ -10,15 +10,6 @@ class Node {
     return identity;
   }
 
-  @override
-  String toString() {
-    if (instance!.isNotEmpty) {
-      return identity.toString();
-    }
-
-    return "$identity/$instance";
-  }
-
   factory Node.parse(possibleNode) {
     if (possibleNode is Node) {
       return possibleNode;
@@ -31,4 +22,23 @@ class Node {
       return Node(identity: identity, instance: instance);
     }
   }
+
+  @override
+  String toString() {
+    if (instance == null) {
+      return identity.toString();
+    }
+
+    return "${identity.toString()}/$instance";
+  }
+
+  @override
+  bool operator ==(other) {
+    return (other is Node) &&
+        other.instance == instance &&
+        other.identity == identity;
+  }
+
+  @override
+  int get hashCode => instance.hashCode ^ identity.hashCode;
 }

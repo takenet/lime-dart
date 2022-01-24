@@ -6,11 +6,6 @@ class Identity {
 
   Identity(this.name, this.domain);
 
-  @override
-  String toString() {
-    return "$name@$domain";
-  }
-
   factory Identity.parse(possibleIdentity) {
     if (possibleIdentity is Node) {
       return possibleIdentity.identity;
@@ -24,4 +19,17 @@ class Identity {
     }
     return possibleIdentity;
   }
+
+  @override
+  String toString() {
+    return "$name@$domain";
+  }
+
+  @override
+  bool operator ==(other) {
+    return (other is Identity) && other.name == name && other.domain == domain;
+  }
+
+  @override
+  int get hashCode => name.hashCode ^ domain.hashCode;
 }

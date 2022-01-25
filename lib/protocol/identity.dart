@@ -27,9 +27,12 @@ class Identity {
 
   @override
   bool operator ==(other) {
-    return (other is Identity) && other.name == name && other.domain == domain;
+    return (other is Identity) &&
+        other.name.toLowerCase() == name.toLowerCase() &&
+        other.domain.toLowerCase() == domain.toLowerCase();
   }
 
   @override
-  int get hashCode => name.hashCode ^ domain.hashCode;
+  int get hashCode =>
+      name.toLowerCase().hashCode ^ domain.toLowerCase().hashCode;
 }

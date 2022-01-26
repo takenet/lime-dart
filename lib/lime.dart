@@ -1,5 +1,23 @@
 library lime;
 
+export '/protocol/command.dart' show Command;
+export '/protocol/document.dart' show Document;
+export '/protocol/envelope_id.dart' show EnvelopeId;
+export '/protocol/envelope.dart' show Envelope;
+export '/protocol/lime_uri.dart' show LimeUri;
+export '/protocol/media_type.dart' show MediaType;
+export '/protocol/message.dart' show Message;
+export '/protocol/notification.dart' show Notification;
+export '/protocol/plain_document.dart' show PlainDocument;
+export '/protocol/reason_codes.dart' show ReasonCodes;
+export '/protocol/reason.dart' show Reason;
+export '/protocol/enums/command_method.enum.dart' show CommandMethod;
+export '/protocol/enums/command_status.enum.dart' show CommandStatus;
+export '/protocol/enums/event.enum.dart' show Event;
+export '/protocol/extensions/envelope.extension.dart' show EnvelopeExtension;
+export '/protocol/extensions/string.extension.dart' show StringExtension;
+export '/protocol/types/composite_types.dart' show CompositeTypes;
+export '/protocol/types/discrete_types.dart' show DiscreteTypes;
+export '/protocol/types/sub_types.dart' show SubTypes;
 export '/protocol/node.dart' show Node;
 export '/protocol/identity.dart' show Identity;
-export '/protocol/reason.dart' show Reason;

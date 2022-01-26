@@ -1,0 +1,29 @@
+import 'package:lime/protocol/media_type.dart';
+import 'package:lime/protocol/node.dart';
+
+class Envelope {
+  static const commandMimeType = 'application/vnd.lime.command+json';
+  static const messageMimeType = 'application/vnd.lime.message+json';
+  static const notificationMimeType = 'application/vnd.lime.notification+json';
+
+  static final MediaType commandMediaType = MediaType.parse(commandMimeType);
+  static final MediaType messageMediaType = MediaType.parse(messageMimeType);
+  static final MediaType notificationMediaType = MediaType.parse(notificationMimeType);
+
+  final String? id;
+  final Node? from;
+  final Node? to;
+  final Node? pp;
+  final Map<String, String>? metadata;
+
+  Envelope({
+    this.id,
+    this.from,
+    this.to,
+    this.pp,
+    this.metadata,
+  });
+
+  factory Envelope.fromJson(Map<String, dynamic> json) =>
+      Envelope(id: json['id'], from: json['from'], to: json['to'], pp: json['pp'], metadata: json['metadata']);
+}

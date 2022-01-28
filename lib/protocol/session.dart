@@ -1,9 +1,9 @@
-import 'package:lime/protocol/enums/authentication_scheme.enum.dart';
 import 'package:lime/protocol/enums/session_compression.enum.dart';
 import 'package:lime/protocol/enums/session_encryption.enum.dart';
 import 'package:lime/protocol/envelope.dart';
 import 'package:lime/protocol/reason.dart';
-import 'package:lime/protocol/security/authentication.dart';
+import 'package:lime/security/authentication.dart';
+import 'package:lime/security/enums/authentication_scheme.enum.dart';
 
 import 'enums/session_state.enum.dart';
 

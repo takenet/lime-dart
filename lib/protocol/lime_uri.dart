@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'package:lime/protocol/extensions/string.extension.dart';
+import 'package:lime/extensions/string.extension.dart';
 import 'package:lime/protocol/identity.dart';
 
 class LimeUri {

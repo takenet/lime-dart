@@ -1,5 +1,6 @@
 library lime;
 
+export '/extensions/string.extension.dart' show StringExtension;
 export '/protocol/command.dart' show Command;
 export '/protocol/document.dart' show Document;
 export '/protocol/envelope_id.dart' show EnvelopeId;
@@ -14,17 +15,15 @@ export '/protocol/reason.dart' show Reason;
 export '/protocol/enums/command_method.enum.dart' show CommandMethod;
 export '/protocol/enums/command_status.enum.dart' show CommandStatus;
 export '/protocol/enums/event.enum.dart' show Event;
-export '/protocol/enums/authentication_scheme.enum.dart'
-    show AuthenticationScheme;
 export '/protocol/enums/session_compression.enum.dart' show SessionCompression;
 export '/protocol/enums/session_encryption.enum.dart' show SessionEncryption;
 export '/protocol/enums/session_state.enum.dart' show SessionState;
 export '/protocol/extensions/envelope.extension.dart' show EnvelopeExtension;
-export '/protocol/extensions/string.extension.dart' show StringExtension;
 export '/protocol/types/composite_types.dart' show CompositeTypes;
 export '/protocol/types/discrete_types.dart' show DiscreteTypes;
 export '/protocol/types/sub_types.dart' show SubTypes;
 export '/protocol/node.dart' show Node;
 export '/protocol/identity.dart' show Identity;
 export '/protocol/session.dart' show Session;
-export '/protocol/security/authentication.dart' show Authentication;
+export '/security/authentication.dart' show Authentication;
+export '/security/enums/authentication_scheme.enum.dart' show AuthenticationScheme;

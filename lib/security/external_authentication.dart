@@ -16,12 +16,12 @@ class ExternalAuthentication extends Authentication {
   String? issuer;
 
   /// Set a plain token to a base64 representation
-  void setToBase64Token(String password) {
-    token = password.isEmpty ? password : password.toBase64();
+  void setToBase64Token(final String? password) {
+    token = password?.toBase64();
   }
 
   /// Gets the token decoded from the Base64 representation
   String getFromBase64Token() {
-    return (token?.isEmpty ?? true ? token : token?.fromBase64()) ?? '';
+    return token?.fromBase64() ?? '';
   }
 }

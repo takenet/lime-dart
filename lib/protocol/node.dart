@@ -2,7 +2,7 @@ import 'package:lime/protocol/identity.dart';
 import 'package:lime/protocol/interfaces/inode.dart';
 
 /// Represents an element of a network.
-class Node extends Identity implements Inode {
+class Node extends Identity implements INode {
   /// Initializes a new instance of the node class.
   Node({String? name, String? domain, this.instance})
       : super(name: name, domain: domain);

@@ -8,7 +8,8 @@ class Envelope {
 
   static final MediaType commandMediaType = MediaType.parse(commandMimeType);
   static final MediaType messageMediaType = MediaType.parse(messageMimeType);
-  static final MediaType notificationMediaType = MediaType.parse(notificationMimeType);
+  static final MediaType notificationMediaType =
+      MediaType.parse(notificationMimeType);
 
   final String? id;
   final Node? from;
@@ -24,6 +25,10 @@ class Envelope {
     this.metadata,
   });
 
-  factory Envelope.fromJson(Map<String, dynamic> json) =>
-      Envelope(id: json['id'], from: json['from'], to: json['to'], pp: json['pp'], metadata: json['metadata']);
+  factory Envelope.fromJson(Map<String, dynamic> json) => Envelope(
+      id: json.containsKey('id') ? json['id'] : null,
+      from: json.containsKey('from') ? Node.parse(json['from']) : null,
+      to: json.containsKey('to') ? Node.parse(json['to']) : null,
+      pp: json.containsKey('pp') ? Node.parse(json['pp']) : null,
+      metadata: json.containsKey('metadata') ? json['metadata'] : null);
 }

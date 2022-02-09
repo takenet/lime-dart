@@ -26,4 +26,7 @@ export '/protocol/node.dart' show Node;
 export '/protocol/identity.dart' show Identity;
 export '/protocol/session.dart' show Session;
 export '/security/authentication.dart' show Authentication;
-export '/security/enums/authentication_scheme.enum.dart' show AuthenticationScheme;
+export '/security/enums/authentication_scheme.enum.dart'
+    show AuthenticationScheme;
+export '/client/client_channel.dart' show ClientChannel;
+export '/network/transport.dart' show Transport;

@@ -37,11 +37,11 @@ abstract class Channel {
           print('envelope is command');
           final command = Command.fromJson(event);
 
-          if ( //_isForMe(command) &&
-              autoReplyPings &&
-                  command.id != null &&
-                  command.uri == '/ping' &&
-                  command.method == CommandMethod.get) {
+          if (autoReplyPings &&
+              command.id != null &&
+              command.uri == '/ping' &&
+              command.method == CommandMethod.get &&
+              _isForMe(command)) {
             print('auto reply ping');
 
             final commandSend = Command(
@@ -110,11 +110,10 @@ abstract class Channel {
   }
 
   bool _isForMe(Envelope envelope) {
-    bool isforme = envelope.to == null ||
+    return envelope.to == null ||
         envelope.to.toString() == localNode ||
         localNode!.substring(0, envelope.to.toString().length) ==
             envelope.to.toString();
-    return isforme;
   }
 
   void onMessage(Message message) {}

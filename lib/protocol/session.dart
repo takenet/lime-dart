@@ -80,7 +80,7 @@ class Session extends Envelope {
     Map<String, dynamic> session = {};
 
     if (state != null) {
-      session['state'] =
+      session[stateKey] =
           describeEnum(state!) == 'isNew' ? 'new' : describeEnum(state!);
     }
 
@@ -92,14 +92,18 @@ class Session extends Envelope {
       session['from'] = from.toString();
     }
 
+    if (to != null) {
+      session['to'] = to.toString();
+    }
+
     if (scheme != null) {
-      session['scheme'] = describeEnum(scheme!);
+      session[schemeKey] = describeEnum(scheme!);
     }
 
     if (authentication != null) {
       if (authentication is KeyAuthentication) {
         KeyAuthentication keyAuth = authentication as KeyAuthentication;
-        session['authentication'] = {"key": keyAuth.key};
+        session[authenticationKey] = {"key": keyAuth.key};
       }
     }
 
@@ -107,7 +111,7 @@ class Session extends Envelope {
   }
 
   factory Session.fromJson(Map<String, dynamic> json) {
-    Session session = Session(
+    final session = Session(
       id: json.containsKey('id') ? json['id'] : null,
       from: json.containsKey('from') ? Node.parse(json['from']) : null,
       to: json.containsKey('to') ? Node.parse(json['to']) : null,

@@ -56,7 +56,8 @@ class LimeUri {
   @override
   bool operator ==(other) {
     final limeUri = other as LimeUri?;
-    return limeUri != null && path?.toLowerCase() == limeUri.path?.toLowerCase();
+    return limeUri != null &&
+        path?.toLowerCase() == limeUri.path?.toLowerCase();
   }
 
   /// Returns a String that represents this instance.
@@ -72,7 +73,8 @@ class LimeUri {
     return Uri.parse('$limeUriScheme://$authority/');
   }
 
-  static LimeUri? fromString(String? value) => value == null ? null : parse(value);
+  static LimeUri? fromString(String? value) =>
+      value == null ? null : parse(value);
 
   void _validatLimeScheme(Uri? absoluteUri) {
     if (absoluteUri?.scheme != limeUriScheme) {

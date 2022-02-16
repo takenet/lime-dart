@@ -26,7 +26,7 @@ class TCPTransport implements Transport {
     compression = SessionCompression.none;
 
     // connect to the socket server
-    socket = await WebSocket.connect('wss://$uri', protocols: ['lime']);
+    socket = await WebSocket.connect(uri, protocols: ['lime']);
     print('Connected to: hmg-ws.blip.ai:443');
 
     // listen for responses from the server
@@ -56,31 +56,6 @@ class TCPTransport implements Transport {
         socket?.close();
       },
     );
-
-    //testes
-    //await Future.delayed(Duration(seconds: 2));
-    //await send({'state': 'new'});
-    //await send(Session(state: SessionState.isNew));
-
-    //await Future.delayed(Duration(seconds: 2));
-    // await send({
-    //   "id": sessionId,
-    //   "from": "boris@msging.net",
-    //   "state": "authenticating",
-    //   "scheme": "key",
-    //   "authentication": {"key": "ZTQ3UTdiR1pEMXNSV0ROc2t2UEc="}
-    // });
-
-    //final keyAuthentication = KeyAuthentication();
-    //keyAuthentication.key = 'ZTQ3UTdiR1pEMXNSV0ROc2t2UEc=';
-
-    // Session envelopeSession = Session(
-    //     id: sessionId,
-    //     from: Node(name: 'boris', domain: 'msging.net'),
-    //     state: SessionState.authenticating,
-    //     scheme: AuthenticationScheme.key,
-    //     authentication: keyAuthentication);
-    //await send(envelopeSession);
   }
 
   @override
@@ -94,7 +69,7 @@ class TCPTransport implements Transport {
 
     socket?.add(encode);
     print('message send: $encode\n');
-    await Future.delayed(const Duration(seconds: 2));
+    //await Future.delayed(const Duration(seconds: 2));
   }
 
   Future<void> sendSecureMessage(

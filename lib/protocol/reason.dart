@@ -10,4 +10,13 @@ class Reason {
   factory Reason.fromJson(Map<String, dynamic> json) {
     return Reason(code: json['code'], description: json['description']);
   }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> reason = {
+      'code': code,
+      'description': description ?? ''
+    };
+
+    return reason;
+  }
 }

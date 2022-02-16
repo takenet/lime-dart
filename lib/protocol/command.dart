@@ -1,15 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:lime/protocol/document.dart';
 import 'package:lime/protocol/enums/command_method.enum.dart';
 import 'package:lime/protocol/enums/command_status.enum.dart';
 import 'package:lime/protocol/envelope.dart';
 import 'package:lime/protocol/envelope_id.dart';
-import 'package:lime/protocol/interfaces/idocument.dart';
-import 'package:lime/protocol/lime_uri.dart';
-import 'package:lime/protocol/media_type.dart';
 import 'package:lime/protocol/message.dart';
+import 'package:lime/protocol/node.dart';
 import 'package:lime/protocol/reason.dart';
 
-class Command extends Envelope implements IDocumentContainer {
+class Command extends Envelope {
   static const String uriKey = 'uri';
   static const String typeKey = Message.typeKey;
   static const String resourceKey = 'resource';
@@ -18,16 +17,27 @@ class Command extends Envelope implements IDocumentContainer {
   static const String reasonKey = 'reason';
 
   /// Initializes a new instance of the Command class.
-  Command({String? id}) : super(id: id ?? EnvelopeId.newId());
+  Command(
+      {final String? id,
+      final Node? from,
+      final Node? to,
+      final Node? pp,
+      this.uri,
+      this.method,
+      this.reason,
+      this.resource,
+      this.status,
+      this.type})
+      : super(id: id ?? EnvelopeId.newId(), from: from, to: to, pp: pp);
 
   /// The universal identifier of the resource
-  LimeUri? uri;
+  String? uri;
 
   /// MIME declaration of the resource type of the command.
-  MediaType? get type => resource?.getMediaType();
+  String? type;
 
   /// Server resource that are subject of the command
-  Document? resource;
+  dynamic resource;
 
   /// Action to be taken to the resource
   CommandMethod? method;
@@ -38,7 +48,82 @@ class Command extends Envelope implements IDocumentContainer {
   /// Indicates a reason for the status
   Reason? reason;
 
-  /// Gets the contained document.
-  @override
-  Document? getDocument() => resource;
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> command = {};
+
+    if (id != null) {
+      command['id'] = id;
+    }
+
+    if (from != null) {
+      command['from'] = from.toString();
+    }
+
+    if (to != null) {
+      command['to'] = to.toString();
+    }
+
+    if (method != null) {
+      command[methodKey] = describeEnum(method!);
+    }
+
+    if (status != null) {
+      command[statusKey] = describeEnum(status!);
+    }
+
+    if (uri != null) {
+      command[uriKey] = uri;
+    }
+
+    if (reason != null) {
+      command[reasonKey] = reason?.toJson();
+    }
+
+    if (type != null) {
+      command[typeKey] = type;
+    }
+
+    if (resource != null) {
+      command[resourceKey] = resource;
+    }
+
+    return command;
+  }
+
+  factory Command.fromJson(Map<String, dynamic> json) {
+    final command = Command(
+      id: json.containsKey('id') ? json['id'] : null,
+      from: json.containsKey('from') ? Node.parse(json['from']) : null,
+      to: json.containsKey('to') ? Node.parse(json['to']) : null,
+      pp: json.containsKey('pp') ? Node.parse(json['pp']) : null,
+    );
+
+    if (json.containsKey(reasonKey)) {
+      command.reason = Reason.fromJson(json[reasonKey]);
+    }
+
+    if (json.containsKey(statusKey)) {
+      command.status = CommandStatus.values
+          .firstWhere((e) => describeEnum(e) == json[statusKey]);
+    }
+
+    if (json.containsKey(methodKey)) {
+      command.method = CommandMethod.values
+          .firstWhere((e) => describeEnum(e) == json[methodKey]);
+    }
+
+    if (json.containsKey(uriKey)) {
+      command.uri = json[uriKey];
+    }
+
+    if (json.containsKey(typeKey)) {
+      command.type = json[typeKey];
+    }
+
+    if (json.containsKey(resourceKey)) {
+      command.resource = json[resourceKey];
+    }
+
+    return command;
+  }
 }

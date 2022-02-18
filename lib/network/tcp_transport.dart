@@ -64,12 +64,13 @@ class TCPTransport implements Transport {
   }
 
   @override
-  Future<void> send(Envelope message) async {
-    String encode = jsonEncode(message);
+  Future<void> send(Envelope envelope) async {
+    String encode = jsonEncode(envelope);
+
+    ensureSocketOpen();
 
     socket?.add(encode);
     print('message send: $encode\n');
-    //await Future.delayed(const Duration(seconds: 2));
   }
 
   Future<void> sendSecureMessage(
@@ -77,6 +78,12 @@ class TCPTransport implements Transport {
     print('message send: $message\n');
     socket.add(utf8.encode(jsonEncode(message)));
     await Future.delayed(const Duration(seconds: 2));
+  }
+
+  void ensureSocketOpen() {
+    if (socket?.readyState != WebSocket.open) {
+      throw Exception('The connection is not open');
+    }
   }
 
   @override

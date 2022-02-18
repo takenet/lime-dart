@@ -50,11 +50,13 @@ class Notification extends Envelope {
   }
 
   factory Notification.fromJson(Map<String, dynamic> json) {
+    final envelope = Envelope.fromJson(json);
+
     final notification = Notification(
-      id: json.containsKey('id') ? json['id'] : null,
-      from: json.containsKey('from') ? Node.parse(json['from']) : null,
-      to: json.containsKey('to') ? Node.parse(json['to']) : null,
-      pp: json.containsKey('pp') ? Node.parse(json['pp']) : null,
+      id: envelope.id,
+      from: envelope.from,
+      to: envelope.to,
+      pp: envelope.pp,
     );
 
     if (json.containsKey(reasonKey)) {

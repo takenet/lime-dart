@@ -27,8 +27,9 @@ class ClientChannel extends Channel {
       throw Exception('Cannot finish a session in the $state state');
     }
 
-    Session session = Session(id: sessionId, state: SessionState.finishing);
-    sendSession(session);
+    sendSession(
+      Session(id: sessionId, state: SessionState.finishing),
+    );
 
     await for (Session value in _sessionFinishedStream.stream) {
       return value;
@@ -42,8 +43,7 @@ class ClientChannel extends Channel {
       throw Exception('Cannot start a session in the $state state');
     }
 
-    Session session = Session(state: SessionState.isNew);
-    sendSession(session);
+    sendSession(Session(state: SessionState.isNew));
 
     await for (Session value in _sessionEstablishedStream.stream) {
       return value;
@@ -58,7 +58,7 @@ class ClientChannel extends Channel {
       throw Exception('Cannot authenticate a session in the $state state.');
     }
 
-    Session session = Session(
+    final session = Session(
       id: sessionId,
       from: Node.parse('$identity/$instance'),
       state: SessionState.authenticating,

@@ -15,7 +15,7 @@ class Envelope {
   final Node? from;
   final Node? to;
   final Node? pp;
-  final Map<String, String>? metadata;
+  final dynamic metadata;
 
   Envelope({
     this.id,

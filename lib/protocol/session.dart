@@ -6,6 +6,7 @@ import 'package:lime/protocol/node.dart';
 import 'package:lime/protocol/reason.dart';
 import 'package:lime/security/authentication.dart';
 import 'package:lime/security/enums/authentication_scheme.enum.dart';
+import 'package:lime/security/external_authentication.dart';
 import 'package:lime/security/key_authentication.dart';
 
 import 'enums/session_state.enum.dart';
@@ -105,17 +106,28 @@ class Session extends Envelope {
         KeyAuthentication keyAuth = authentication as KeyAuthentication;
         session[authenticationKey] = {"key": keyAuth.key};
       }
+      if (authentication is ExternalAuthentication) {
+        ExternalAuthentication externalAuth =
+            authentication as ExternalAuthentication;
+        session[authenticationKey] = {
+          "token": externalAuth.token,
+          "issuer": externalAuth.issuer,
+          "scheme": describeEnum(externalAuth.scheme)
+        };
+      }
     }
 
     return session;
   }
 
   factory Session.fromJson(Map<String, dynamic> json) {
+    final envelope = Envelope.fromJson(json);
+
     final session = Session(
-      id: json.containsKey('id') ? json['id'] : null,
-      from: json.containsKey('from') ? Node.parse(json['from']) : null,
-      to: json.containsKey('to') ? Node.parse(json['to']) : null,
-      pp: json.containsKey('pp') ? Node.parse(json['pp']) : null,
+      id: envelope.id,
+      from: envelope.from,
+      to: envelope.to,
+      pp: envelope.pp,
     );
 
     if (json.containsKey(stateKey)) {

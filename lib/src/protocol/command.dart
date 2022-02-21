@@ -16,18 +16,19 @@ class Command extends Envelope {
   static const String reasonKey = 'reason';
 
   /// Initializes a new instance of the Command class.
-  Command(
-      {final String? id,
-      final Node? from,
-      final Node? to,
-      final Node? pp,
-      this.uri,
-      this.method,
-      this.reason,
-      this.resource,
-      this.status,
-      this.type})
-      : super(id: id ?? EnvelopeId.newId(), from: from, to: to, pp: pp);
+  Command({
+    final String? id,
+    final Node? from,
+    final Node? to,
+    final Node? pp,
+    final dynamic metadata,
+    this.uri,
+    this.method,
+    this.reason,
+    this.resource,
+    this.status,
+    this.type,
+  }) : super(id: id ?? EnvelopeId.newId(), from: from, to: to, pp: pp, metadata: metadata);
 
   /// The universal identifier of the resource
   String? uri;

@@ -9,14 +9,21 @@ import '../session.dart';
 import 'channel.dart';
 
 class ClientChannel extends Channel {
-  ClientChannel(Transport transport) : super(transport: transport);
+  ClientChannel(
+    Transport transport, {
+    final bool autoReplyPings = true,
+    final bool autoNotifyReceipt = false,
+  }) : super(
+          transport: transport,
+          autoReplyPings: autoReplyPings,
+          autoNotifyReceipt: autoNotifyReceipt,
+        );
 
   final _sessionEstablishedStream = StreamController<Session>();
   final _sessionAuthenticationStream = StreamController<Session>();
   final _sessionFinishedStream = StreamController<Session>();
 
-  Future<void> establishSession(
-      String identity, String instance, Authentication authentication) async {
+  Future<void> establishSession(String identity, String instance, Authentication authentication) async {
     Session session = await startNewSession();
 
     session = await authenticateSession(identity, instance, authentication);
@@ -52,8 +59,7 @@ class ClientChannel extends Channel {
     throw Exception('startNewSession error');
   }
 
-  Future<Session> authenticateSession(
-      String identity, String instance, Authentication authentication) async {
+  Future<Session> authenticateSession(String identity, String instance, Authentication authentication) async {
     if (state != SessionState.authenticating) {
       throw Exception('Cannot authenticate a session in the $state state.');
     }

@@ -8,8 +8,15 @@ class Notification extends Envelope {
   static const String eventKey = "event";
   static const String reasonKey = "reason";
 
-  Notification({final String? id, final Node? from, final Node? to, final Node? pp, this.event, this.reason})
-      : super(id: id, from: from, to: to, pp: pp);
+  Notification(
+      {final String? id,
+      final Node? from,
+      final Node? to,
+      final Node? pp,
+      final dynamic metadata,
+      this.event,
+      this.reason})
+      : super(id: id, from: from, to: to, pp: pp, metadata: metadata);
 
   /// Related event to the notification
   NotificationEvent? event;

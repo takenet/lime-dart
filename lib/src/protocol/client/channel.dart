@@ -20,8 +20,8 @@ abstract class Channel {
 
   Channel({
     required this.transport,
-    this.autoReplyPings = true,
-    this.autoNotifyReceipt = false,
+    required this.autoReplyPings,
+    required this.autoNotifyReceipt,
   }) {
     state = SessionState.isNew;
 
@@ -73,8 +73,8 @@ abstract class Channel {
     );
   }
 
-  Future<void> open() async {
-    await transport.open();
+  Future<void> open(final String uri) async {
+    await transport.open(uri);
   }
 
   Future<void> sendSession(Session session) {
@@ -112,8 +112,7 @@ abstract class Channel {
   bool _isForMe(Envelope envelope) {
     return envelope.to == null ||
         envelope.to.toString() == localNode ||
-        localNode!.substring(0, envelope.to.toString().length) ==
-            envelope.to.toString();
+        localNode!.substring(0, envelope.to.toString().length) == envelope.to.toString();
   }
 
   void onMessage(Message message) {}

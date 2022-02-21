@@ -1,24 +1,18 @@
 import 'package:flutter/foundation.dart';
-import '../protocol/enums/event.enum.dart';
-import '../protocol/envelope.dart';
-import '../protocol/node.dart';
-import '../protocol/reason.dart';
+import 'enums/notification_event.enum.dart';
+import 'envelope.dart';
+import 'node.dart';
+import 'reason.dart';
 
 class Notification extends Envelope {
   static const String eventKey = "event";
   static const String reasonKey = "reason";
 
-  Notification(
-      {final String? id,
-      final Node? from,
-      final Node? to,
-      final Node? pp,
-      this.event,
-      this.reason})
+  Notification({final String? id, final Node? from, final Node? to, final Node? pp, this.event, this.reason})
       : super(id: id, from: from, to: to, pp: pp);
 
   /// Related event to the notification
-  Event? event;
+  NotificationEvent? event;
 
   /// In the case of a failed event, brings more details about the problem.
   Reason? reason;
@@ -63,8 +57,7 @@ class Notification extends Envelope {
       notification.reason = Reason.fromJson(json[reasonKey]);
     }
     if (json.containsKey(eventKey)) {
-      notification.event =
-          Event.values.firstWhere((e) => describeEnum(e) == json[eventKey]);
+      notification.event = NotificationEvent.values.firstWhere((e) => describeEnum(e) == json[eventKey]);
     }
 
     return notification;

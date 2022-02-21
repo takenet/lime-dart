@@ -1,13 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:lime/src/protocol/enums/command_method.enum.dart';
-
-//import 'enums/command_method.enum.dart';
+import 'envelope.dart';
+import 'envelope_id.dart';
+import 'message.dart';
+import 'node.dart';
+import 'reason.dart';
+import 'enums/command_method.enum.dart';
 import 'enums/command_status.enum.dart';
-import '../protocol/envelope.dart';
-import '../protocol/envelope_id.dart';
-import '../protocol/message.dart';
-import '../protocol/node.dart';
-import '../protocol/reason.dart';
 
 class Command extends Envelope {
   static const String uriKey = 'uri';
@@ -106,13 +104,11 @@ class Command extends Envelope {
     }
 
     if (json.containsKey(statusKey)) {
-      command.status = CommandStatus.values
-          .firstWhere((e) => describeEnum(e) == json[statusKey]);
+      command.status = CommandStatus.values.firstWhere((e) => describeEnum(e) == json[statusKey]);
     }
 
     if (json.containsKey(methodKey)) {
-      command.method = CommandMethod.values
-          .firstWhere((e) => describeEnum(e) == json[methodKey]);
+      command.method = CommandMethod.values.firstWhere((e) => describeEnum(e) == json[methodKey]);
     }
 
     if (json.containsKey(uriKey)) {

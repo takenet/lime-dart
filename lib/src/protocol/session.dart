@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
-import '../protocol/enums/session_compression.enum.dart';
-import '../protocol/enums/session_encryption.enum.dart';
-import '../protocol/envelope.dart';
-import '../protocol/node.dart';
-import '../protocol/reason.dart';
-import '../protocol/security/enums/authentication_scheme.enum.dart';
-import '../protocol/security/external_authentication.dart';
-import '../protocol/security/key_authentication.dart';
-import '../protocol/security/authentication.dart';
-import '../protocol/enums/session_state.enum.dart';
+import 'envelope.dart';
+import 'node.dart';
+import 'reason.dart';
+import 'security/enums/authentication_scheme.enum.dart';
+import 'security/external_authentication.dart';
+import 'security/key_authentication.dart';
+import 'security/authentication.dart';
+import 'enums/session_compression.enum.dart';
+import 'enums/session_encryption.enum.dart';
+import 'enums/session_state.enum.dart';
 
 /// Allows the configuration and establishment of the communication channel between nodes.
 class Session extends Envelope {
@@ -80,8 +80,7 @@ class Session extends Envelope {
     Map<String, dynamic> session = {};
 
     if (state != null) {
-      session[stateKey] =
-          describeEnum(state!) == 'isNew' ? 'new' : describeEnum(state!);
+      session[stateKey] = describeEnum(state!) == 'isNew' ? 'new' : describeEnum(state!);
     }
 
     if (id != null) {
@@ -106,8 +105,7 @@ class Session extends Envelope {
         session[authenticationKey] = {"key": keyAuth.key};
       }
       if (authentication is ExternalAuthentication) {
-        ExternalAuthentication externalAuth =
-            authentication as ExternalAuthentication;
+        ExternalAuthentication externalAuth = authentication as ExternalAuthentication;
         session[authenticationKey] = {
           "token": externalAuth.token,
           "issuer": externalAuth.issuer,
@@ -130,16 +128,13 @@ class Session extends Envelope {
     );
 
     if (json.containsKey(stateKey)) {
-      session.state = SessionState.values
-          .firstWhere((e) => describeEnum(e) == json[stateKey]);
+      session.state = SessionState.values.firstWhere((e) => describeEnum(e) == json[stateKey]);
     }
 
     if (json.containsKey(schemeOptionsKey)) {
       final schemeOptionsList = json[schemeOptionsKey] as List;
-      final schemeOptions = schemeOptionsList
-          .map((e) => AuthenticationScheme.values
-              .firstWhere((e2) => describeEnum(e2) == e))
-          .toList();
+      final schemeOptions =
+          schemeOptionsList.map((e) => AuthenticationScheme.values.firstWhere((e2) => describeEnum(e2) == e)).toList();
       session.schemeOptions = schemeOptions;
     }
 

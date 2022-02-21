@@ -1,4 +1,4 @@
-enum Event {
+enum NotificationEvent {
   /// A problem occurred during the processing of the message.
   failed,
 

@@ -1,18 +1,12 @@
-import '../protocol/envelope.dart';
-import '../protocol/node.dart';
+import 'envelope.dart';
+import 'node.dart';
 
 class Message extends Envelope {
   static const String typeKey = 'type';
   static const String contentKey = 'content';
 
   /// Initializes a new instance of the Message class.
-  Message(
-      {final String? id,
-      final Node? from,
-      final Node? to,
-      final Node? pp,
-      this.content,
-      this.type})
+  Message({final String? id, final Node? from, final Node? to, final Node? pp, this.content, this.type})
       : super(id: id, from: from, to: to, pp: pp);
 
   ///  MIME declaration of the content type of the message.

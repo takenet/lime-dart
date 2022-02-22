@@ -4,7 +4,6 @@ export 'src/protocol/guid.dart' show guid;
 export 'src/protocol/extensions/string.extension.dart' show StringExtension;
 export 'src/protocol/command.dart' show Command;
 export 'src/protocol/document.dart' show Document;
-export 'src/protocol/envelope_id.dart' show EnvelopeId;
 export 'src/protocol/envelope.dart' show Envelope;
 export 'src/protocol/lime_uri.dart' show LimeUri;
 export 'src/protocol/media_type.dart' show MediaType;
@@ -31,12 +30,17 @@ export 'src/protocol/identity.dart' show Identity;
 export 'src/protocol/session.dart' show Session;
 export 'src/protocol/presence.dart' show Presence;
 export 'src/protocol/security/authentication.dart' show Authentication;
-export 'src/protocol/security/guest_authentication.dart' show GuestAuthentication;
+export 'src/protocol/security/guest_authentication.dart'
+    show GuestAuthentication;
 export 'src/protocol/security/key_authentication.dart' show KeyAuthentication;
-export 'src/protocol/security/external_authentication.dart' show ExternalAuthentication;
-export 'src/protocol/security/plain_authentication.dart' show PlainAuthentication;
-export 'src/protocol/security/transport_authentication.dart' show TransportAuthentication;
-export 'src/protocol/security/enums/authentication_scheme.enum.dart' show AuthenticationScheme;
+export 'src/protocol/security/external_authentication.dart'
+    show ExternalAuthentication;
+export 'src/protocol/security/plain_authentication.dart'
+    show PlainAuthentication;
+export 'src/protocol/security/transport_authentication.dart'
+    show TransportAuthentication;
+export 'src/protocol/security/enums/authentication_scheme.enum.dart'
+    show AuthenticationScheme;
 export 'src/protocol/client/client_channel.dart' show ClientChannel;
 export 'src/protocol/network/transport.dart' show Transport;
 export 'src/protocol/network/tcp_transport.dart' show TCPTransport;

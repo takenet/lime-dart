@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'guid.dart';
 import 'envelope.dart';
-import 'envelope_id.dart';
 import 'message.dart';
 import 'node.dart';
 import 'reason.dart';
@@ -28,7 +28,7 @@ class Command extends Envelope {
     this.resource,
     this.status,
     this.type,
-  }) : super(id: id ?? EnvelopeId.newId(), from: from, to: to, pp: pp, metadata: metadata);
+  }) : super(id: id ?? guid(), from: from, to: to, pp: pp, metadata: metadata);
 
   /// The universal identifier of the resource
   String? uri;
@@ -105,11 +105,13 @@ class Command extends Envelope {
     }
 
     if (json.containsKey(statusKey)) {
-      command.status = CommandStatus.values.firstWhere((e) => describeEnum(e) == json[statusKey]);
+      command.status = CommandStatus.values
+          .firstWhere((e) => describeEnum(e) == json[statusKey]);
     }
 
     if (json.containsKey(methodKey)) {
-      command.method = CommandMethod.values.firstWhere((e) => describeEnum(e) == json[methodKey]);
+      command.method = CommandMethod.values
+          .firstWhere((e) => describeEnum(e) == json[methodKey]);
     }
 
     if (json.containsKey(uriKey)) {

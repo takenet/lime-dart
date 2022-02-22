@@ -51,9 +51,7 @@ class Command extends Envelope {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> command = {};
 
-    if (id != null) {
-      command['id'] = id;
-    }
+    command['id'] = id;
 
     if (from != null) {
       command['from'] = from.toString();
@@ -106,13 +104,11 @@ class Command extends Envelope {
     }
 
     if (json.containsKey(statusKey)) {
-      command.status = CommandStatus.values
-          .firstWhere((e) => describeEnum(e) == json[statusKey]);
+      command.status = CommandStatus.values.firstWhere((e) => describeEnum(e) == json[statusKey]);
     }
 
     if (json.containsKey(methodKey)) {
-      command.method = CommandMethod.values
-          .firstWhere((e) => describeEnum(e) == json[methodKey]);
+      command.method = CommandMethod.values.firstWhere((e) => describeEnum(e) == json[methodKey]);
     }
 
     if (json.containsKey(uriKey)) {

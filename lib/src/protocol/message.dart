@@ -47,9 +47,7 @@ class Message extends Envelope {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> message = {};
 
-    if (id != null) {
-      message['id'] = id;
-    }
+    message['id'] = id;
 
     if (from != null) {
       message['from'] = from.toString();

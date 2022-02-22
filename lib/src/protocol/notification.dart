@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'enums/notification_event.enum.dart';
 import 'envelope.dart';
-import 'envelope_id.dart';
+import 'guid.dart';
 import 'node.dart';
 import 'reason.dart';
 
@@ -9,15 +9,15 @@ class Notification extends Envelope {
   static const String eventKey = "event";
   static const String reasonKey = "reason";
 
-  Notification(
-      {final String? id,
-      final Node? from,
-      final Node? to,
-      final Node? pp,
-      final Map<String, String>? metadata,
-      this.event,
-      this.reason})
-      : super(id: id ?? EnvelopeId.newId(), from: from, to: to, pp: pp, metadata: metadata);
+  Notification({
+    final String? id,
+    final Node? from,
+    final Node? to,
+    final Node? pp,
+    final Map<String, String>? metadata,
+    this.event,
+    this.reason,
+  }) : super(id: id ?? guid(), from: from, to: to, pp: pp, metadata: metadata);
 
   /// Related event to the notification
   NotificationEvent? event;
@@ -28,9 +28,7 @@ class Notification extends Envelope {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> notification = {};
 
-    if (id != null) {
-      notification['id'] = id;
-    }
+    notification['id'] = id;
 
     if (from != null) {
       notification['from'] = from.toString();
@@ -66,8 +64,7 @@ class Notification extends Envelope {
       notification.reason = Reason.fromJson(json[reasonKey]);
     }
     if (json.containsKey(eventKey)) {
-      notification.event = NotificationEvent.values
-          .firstWhere((e) => describeEnum(e) == json[eventKey]);
+      notification.event = NotificationEvent.values.firstWhere((e) => describeEnum(e) == json[eventKey]);
     }
 
     return notification;

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'guid.dart';
 import 'envelope.dart';
-import 'envelope_id.dart';
 import 'message.dart';
 import 'node.dart';
 import 'reason.dart';
@@ -21,14 +21,14 @@ class Command extends Envelope {
     final Node? from,
     final Node? to,
     final Node? pp,
-    final dynamic metadata,
+    final Map<String, String>? metadata,
     this.uri,
     this.method,
     this.reason,
     this.resource,
     this.status,
     this.type,
-  }) : super(id: id ?? EnvelopeId.newId(), from: from, to: to, pp: pp, metadata: metadata);
+  }) : super(id: id ?? guid(), from: from, to: to, pp: pp, metadata: metadata);
 
   /// The universal identifier of the resource
   String? uri;
@@ -37,7 +37,7 @@ class Command extends Envelope {
   String? type;
 
   /// Server resource that are subject of the command
-  dynamic resource;
+  Map<String, dynamic>? resource;
 
   /// Action to be taken to the resource
   CommandMethod? method;
@@ -98,6 +98,7 @@ class Command extends Envelope {
       from: envelope.from,
       to: envelope.to,
       pp: envelope.pp,
+      metadata: envelope.metadata,
     );
 
     if (json.containsKey(reasonKey)) {
@@ -105,11 +106,13 @@ class Command extends Envelope {
     }
 
     if (json.containsKey(statusKey)) {
-      command.status = CommandStatus.values.firstWhere((e) => describeEnum(e) == json[statusKey]);
+      command.status = CommandStatus.values
+          .firstWhere((e) => describeEnum(e) == json[statusKey]);
     }
 
     if (json.containsKey(methodKey)) {
-      command.method = CommandMethod.values.firstWhere((e) => describeEnum(e) == json[methodKey]);
+      command.method = CommandMethod.values
+          .firstWhere((e) => describeEnum(e) == json[methodKey]);
     }
 
     if (json.containsKey(uriKey)) {

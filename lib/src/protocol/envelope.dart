@@ -14,7 +14,7 @@ class Envelope {
   final Node? from;
   final Node? to;
   final Node? pp;
-  final dynamic metadata;
+  final Map<String, String>? metadata;
 
   Envelope({
     required this.id,
@@ -24,10 +24,14 @@ class Envelope {
     this.metadata,
   });
 
-  factory Envelope.fromJson(Map<String, dynamic> json) => Envelope(
-      id: json.containsKey('id') ? json['id'] : null,
-      from: json.containsKey('from') ? Node.parse(json['from']) : null,
-      to: json.containsKey('to') ? Node.parse(json['to']) : null,
-      pp: json.containsKey('pp') ? Node.parse(json['pp']) : null,
-      metadata: json.containsKey('metadata') ? json['metadata'] : null);
+  factory Envelope.fromJson(Map<String, dynamic> json) {
+    return Envelope(
+        id: json.containsKey('id') ? json['id'] : null,
+        from: json.containsKey('from') ? Node.parse(json['from']) : null,
+        to: json.containsKey('to') ? Node.parse(json['to']) : null,
+        pp: json.containsKey('pp') ? Node.parse(json['pp']) : null,
+        metadata: json.containsKey('metadata')
+            ? Map<String, String>.from(json['metadata'])
+            : null);
+  }
 }

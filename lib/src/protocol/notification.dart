@@ -14,7 +14,7 @@ class Notification extends Envelope {
       final Node? from,
       final Node? to,
       final Node? pp,
-      final dynamic metadata,
+      final Map<String, String>? metadata,
       this.event,
       this.reason})
       : super(id: id ?? EnvelopeId.newId(), from: from, to: to, pp: pp, metadata: metadata);
@@ -59,13 +59,15 @@ class Notification extends Envelope {
       from: envelope.from,
       to: envelope.to,
       pp: envelope.pp,
+      metadata: envelope.metadata,
     );
 
     if (json.containsKey(reasonKey)) {
       notification.reason = Reason.fromJson(json[reasonKey]);
     }
     if (json.containsKey(eventKey)) {
-      notification.event = NotificationEvent.values.firstWhere((e) => describeEnum(e) == json[eventKey]);
+      notification.event = NotificationEvent.values
+          .firstWhere((e) => describeEnum(e) == json[eventKey]);
     }
 
     return notification;

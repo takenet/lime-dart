@@ -6,8 +6,15 @@ class Message extends Envelope {
   static const String contentKey = 'content';
 
   /// Initializes a new instance of the Message class.
-  Message({final String? id, final Node? from, final Node? to, final Node? pp, this.content, this.type})
-      : super(id: id, from: from, to: to, pp: pp);
+  Message(
+      {final String? id,
+      final Node? from,
+      final Node? to,
+      final Node? pp,
+      final Map<String, String>? metadata,
+      this.content,
+      this.type})
+      : super(id: id, from: from, to: to, pp: pp, metadata: metadata);
 
   ///  MIME declaration of the content type of the message.
   String? type;
@@ -23,6 +30,7 @@ class Message extends Envelope {
       from: envelope.from,
       to: envelope.to,
       pp: envelope.pp,
+      metadata: envelope.metadata,
     );
 
     if (json.containsKey(contentKey)) {

@@ -21,7 +21,7 @@ class Command extends Envelope {
     final Node? from,
     final Node? to,
     final Node? pp,
-    final dynamic metadata,
+    final Map<String, String>? metadata,
     this.uri,
     this.method,
     this.reason,
@@ -37,7 +37,7 @@ class Command extends Envelope {
   String? type;
 
   /// Server resource that are subject of the command
-  dynamic resource;
+  Map<String, dynamic>? resource;
 
   /// Action to be taken to the resource
   CommandMethod? method;
@@ -98,6 +98,7 @@ class Command extends Envelope {
       from: envelope.from,
       to: envelope.to,
       pp: envelope.pp,
+      metadata: envelope.metadata,
     );
 
     if (json.containsKey(reasonKey)) {

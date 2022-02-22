@@ -45,12 +45,13 @@ abstract class Channel {
             print('auto reply ping');
 
             final commandSend = Command(
-                id: command.id,
-                to: command.from,
-                method: CommandMethod.get,
-                status: CommandStatus.success,
-                type: 'application/vnd.lime.ping+json',
-                resource: {});
+              id: command.id,
+              to: command.from,
+              method: CommandMethod.get,
+              status: CommandStatus.success,
+              type: 'application/vnd.lime.ping+json',
+              resource: {},
+            );
 
             sendCommand(commandSend);
           }
@@ -112,7 +113,8 @@ abstract class Channel {
   bool _isForMe(Envelope envelope) {
     return envelope.to == null ||
         envelope.to.toString() == localNode ||
-        localNode!.substring(0, envelope.to.toString().length) == envelope.to.toString();
+        localNode!.substring(0, envelope.to.toString().length) ==
+            envelope.to.toString();
   }
 
   void onMessage(Message message) {}

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'envelope.dart';
+import 'envelope_id.dart';
 import 'node.dart';
 import 'reason.dart';
 import 'security/enums/authentication_scheme.enum.dart';
@@ -32,7 +33,7 @@ class Session extends Envelope {
       this.state,
       this.scheme,
       this.authentication})
-      : super(id: id, from: from, to: to, pp: pp);
+      : super(id: id ?? EnvelopeId.newId(), from: from, to: to, pp: pp);
 
   /// Informs or changes the state of a session.
   /// Only the server can change the session state, but the client can request the state transition.

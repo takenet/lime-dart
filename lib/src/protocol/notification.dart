@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'enums/notification_event.enum.dart';
 import 'envelope.dart';
+import 'envelope_id.dart';
 import 'node.dart';
 import 'reason.dart';
 
@@ -16,7 +17,7 @@ class Notification extends Envelope {
       final dynamic metadata,
       this.event,
       this.reason})
-      : super(id: id, from: from, to: to, pp: pp, metadata: metadata);
+      : super(id: id ?? EnvelopeId.newId(), from: from, to: to, pp: pp, metadata: metadata);
 
   /// Related event to the notification
   NotificationEvent? event;

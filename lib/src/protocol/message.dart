@@ -1,4 +1,5 @@
 import 'envelope.dart';
+import 'envelope_id.dart';
 import 'node.dart';
 
 class Message extends Envelope {
@@ -7,7 +8,7 @@ class Message extends Envelope {
 
   /// Initializes a new instance of the Message class.
   Message({final String? id, final Node? from, final Node? to, final Node? pp, this.content, this.type})
-      : super(id: id, from: from, to: to, pp: pp);
+      : super(id: id ?? EnvelopeId.newId(), from: from, to: to, pp: pp);
 
   ///  MIME declaration of the content type of the message.
   String? type;

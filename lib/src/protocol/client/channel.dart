@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../command.dart';
 import '../enums/command_method.enum.dart';
 import '../enums/command_status.enum.dart';
@@ -7,6 +9,8 @@ import '../message.dart';
 import '../network/transport.dart';
 import '../notification.dart';
 import '../session.dart';
+
+const commandTimeout = 6000;
 
 abstract class Channel {
   final Transport transport;
@@ -83,6 +87,37 @@ abstract class Channel {
     }
     return send(session);
   }
+
+  // Future processCommand(Command command, {int timeout = commandTimeout}) {
+  //   final responsePromise = Future<Command>(() {
+  //     final _completer = Completer<Command>();
+  //     _commandResolves[command.id] = _completer.complete;
+
+  //     return _completer.future;
+  //   });
+
+  //   final commandPromise = Future<Command>.any([
+  //     responsePromise,
+  //     Future<Command>(() {
+  //       final _completer = Completer<Command>();
+
+  //       Future.delayed(
+  //         Duration(milliseconds: timeout),
+  //         () {
+  //           if (_commandResolves[command.id] == null) return _completer.future;
+
+  //           _commandResolves.remove(command.id);
+
+  //           final cmd = jsonEncode(command);
+  //           return Future.error(Exception('The follow command processing has timed out: $cmd'));
+  //         },
+  //       );
+  //     }),
+  //   ]);
+
+  //   sendCommand(command);
+  //   return commandPromise;
+  // }
 
   Future<void> sendCommand(Command command) {
     if (state != SessionState.established) {

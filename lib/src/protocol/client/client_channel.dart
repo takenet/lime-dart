@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import '../command.dart';
 import '../enums/session_state.enum.dart';
+import '../message.dart';
 import '../network/transport.dart';
 import '../node.dart';
+import '../notification.dart';
 import '../security/authentication.dart';
 import '../session.dart';
 
@@ -107,9 +110,9 @@ class ClientChannel extends Channel {
   }
 
   @override
-  void onNotification(notification) {}
+  void onNotification(Notification notification) {}
   @override
-  void onCommand(command) {}
+  void onCommand(Command command) {}
   @override
-  void onMessage(message) {}
+  void onMessage(Message message) {}
 }

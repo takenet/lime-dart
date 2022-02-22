@@ -8,17 +8,16 @@ class Envelope {
 
   static final MediaType commandMediaType = MediaType.parse(commandMimeType);
   static final MediaType messageMediaType = MediaType.parse(messageMimeType);
-  static final MediaType notificationMediaType =
-      MediaType.parse(notificationMimeType);
+  static final MediaType notificationMediaType = MediaType.parse(notificationMimeType);
 
-  final String? id;
+  final String id;
   final Node? from;
   final Node? to;
   final Node? pp;
   final dynamic metadata;
 
   Envelope({
-    this.id,
+    required this.id,
     this.from,
     this.to,
     this.pp,

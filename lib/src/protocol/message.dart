@@ -12,7 +12,7 @@ class Message extends Envelope {
     final Node? from,
     final Node? to,
     final Node? pp,
-    Map<String, String>? metadata,
+    Map<String, dynamic>? metadata,
     this.content,
     this.type,
   }) : super(id: id ?? guid(), from: from, to: to, pp: pp, metadata: metadata);

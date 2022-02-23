@@ -21,7 +21,7 @@ class Command extends Envelope {
     final Node? from,
     final Node? to,
     final Node? pp,
-    final Map<String, String>? metadata,
+    final Map<String, dynamic>? metadata,
     this.uri,
     this.method,
     this.reason,

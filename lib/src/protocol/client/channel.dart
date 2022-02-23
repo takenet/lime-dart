@@ -7,6 +7,7 @@ import '../enums/session_state.enum.dart';
 import '../envelope.dart';
 import '../message.dart';
 import '../network/transport.dart';
+import '../node.dart';
 import '../notification.dart';
 import '../session.dart';
 
@@ -17,8 +18,8 @@ abstract class Channel {
   final bool autoReplyPings;
   final bool autoNotifyReceipt;
 
-  String? remoteNode;
-  String? localNode;
+  Node? remoteNode;
+  Node? localNode;
   String? sessionId;
   SessionState? state;
 
@@ -45,7 +46,7 @@ abstract class Channel {
               command.id != null &&
               command.uri == '/ping' &&
               command.method == CommandMethod.get &&
-              _isForMe(command)) {
+              isForMe(command)) {
             print('auto reply ping');
 
             final commandSend = Command(
@@ -145,11 +146,11 @@ abstract class Channel {
     await transport.send(envelope);
   }
 
-  bool _isForMe(Envelope envelope) {
+  bool isForMe(Envelope envelope) {
     return envelope.to == null ||
-        envelope.to.toString() == localNode ||
-        localNode!.substring(0, envelope.to.toString().length) ==
-            envelope.to.toString();
+        envelope.to.toString() == localNode?.toString() ||
+        localNode?.toString().substring(0, envelope.to.toString().length).toLowerCase() ==
+            envelope.to.toString().toLowerCase();
   }
 
   void onMessage(Message message) {}

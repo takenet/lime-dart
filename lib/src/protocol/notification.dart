@@ -14,7 +14,7 @@ class Notification extends Envelope {
     final Node? from,
     final Node? to,
     final Node? pp,
-    final Map<String, String>? metadata,
+    final Map<String, dynamic>? metadata,
     this.event,
     this.reason,
   }) : super(id: id ?? guid(), from: from, to: to, pp: pp, metadata: metadata);

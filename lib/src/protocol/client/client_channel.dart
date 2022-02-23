@@ -26,8 +26,11 @@ class ClientChannel extends Channel {
   final _sessionAuthenticationStream = StreamController<Session>();
   final _sessionFinishedStream = StreamController<Session>();
 
-  Future<Session> establishSession(
-      String identity, String instance, Authentication authentication) async {
+  final onReceiveNotification = StreamController<Notification>();
+  final onReceiveCommand = StreamController<Command>();
+  final onReceiveMessage = StreamController<Message>();
+
+  Future<Session> establishSession(String identity, String instance, Authentication authentication) async {
     Session session = await startNewSession();
 
     session = await authenticateSession(identity, instance, authentication);
@@ -65,8 +68,7 @@ class ClientChannel extends Channel {
     throw Exception('startNewSession error');
   }
 
-  Future<Session> authenticateSession(
-      String identity, String instance, Authentication authentication) async {
+  Future<Session> authenticateSession(String identity, String instance, Authentication authentication) async {
     if (state != SessionState.authenticating) {
       throw Exception('Cannot authenticate a session in the $state state.');
     }
@@ -92,8 +94,8 @@ class ClientChannel extends Channel {
     sessionId = session.id;
     state = session.state;
     if (session.state == SessionState.established) {
-      localNode = session.to.toString();
-      remoteNode = session.from.toString();
+      localNode = session.to;
+      remoteNode = session.from;
     }
 
     switch (session.state) {
@@ -114,9 +116,17 @@ class ClientChannel extends Channel {
   }
 
   @override
-  void onNotification(Notification notification) {}
+  void onNotification(Notification notification) {
+    onReceiveNotification.sink.add(notification);
+  }
+
   @override
-  void onCommand(Command command) {}
+  void onCommand(Command command) {
+    onReceiveCommand.sink.add(command);
+  }
+
   @override
-  void onMessage(Message message) {}
+  void onMessage(Message message) {
+    onReceiveMessage.sink.add(message);
+  }
 }

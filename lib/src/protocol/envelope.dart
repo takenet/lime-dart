@@ -14,7 +14,7 @@ class Envelope {
   final Node? from;
   final Node? to;
   final Node? pp;
-  final Map<String, String>? metadata;
+  final Map<String, dynamic>? metadata;
 
   Envelope({
     required this.id,
@@ -30,8 +30,6 @@ class Envelope {
         from: json.containsKey('from') ? Node.parse(json['from']) : null,
         to: json.containsKey('to') ? Node.parse(json['to']) : null,
         pp: json.containsKey('pp') ? Node.parse(json['pp']) : null,
-        metadata: json.containsKey('metadata')
-            ? Map<String, String>.from(json['metadata'])
-            : null);
+        metadata: json.containsKey('metadata') ? Map<String, String>.from(json['metadata']) : null);
   }
 }

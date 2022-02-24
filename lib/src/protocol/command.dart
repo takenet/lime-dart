@@ -15,6 +15,24 @@ class Command extends Envelope {
   static const String statusKey = 'status';
   static const String reasonKey = 'reason';
 
+  /// The universal identifier of the resource
+  String? uri;
+
+  /// MIME declaration of the resource type of the command.
+  String? type;
+
+  /// Server resource that are subject of the command
+  dynamic resource;
+
+  /// Action to be taken to the resource
+  CommandMethod? method;
+
+  /// Indicates the status of the action taken to the resource
+  CommandStatus? status = CommandStatus.pending;
+
+  /// Indicates a reason for the status
+  Reason? reason;
+
   /// Initializes a new instance of the Command class.
   Command({
     final String? id,
@@ -29,24 +47,6 @@ class Command extends Envelope {
     this.status,
     this.type,
   }) : super(id: id ?? guid(), from: from, to: to, pp: pp, metadata: metadata);
-
-  /// The universal identifier of the resource
-  String? uri;
-
-  /// MIME declaration of the resource type of the command.
-  String? type;
-
-  /// Server resource that are subject of the command
-  Map<String, dynamic>? resource;
-
-  /// Action to be taken to the resource
-  CommandMethod? method;
-
-  /// Indicates the status of the action taken to the resource
-  CommandStatus? status = CommandStatus.pending;
-
-  /// Indicates a reason for the status
-  Reason? reason;
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> command = {};

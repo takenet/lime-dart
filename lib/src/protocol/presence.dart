@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'document.dart';
 import 'media_type.dart';
 import 'enums/presence_status.enum.dart';
@@ -38,4 +40,18 @@ class Presence extends Document {
     this.promiscuous,
     this.instances,
   }) : super(mediaType: MediaType.parse(mimeType));
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> presence = {};
+
+    if (status != null) {
+      presence['status'] = describeEnum(status!);
+    }
+
+    if (routingRule != null) {
+      presence['routingRule'] = describeEnum(routingRule!);
+    }
+
+    return presence;
+  }
 }

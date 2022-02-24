@@ -22,17 +22,20 @@ class ClientChannel extends Channel {
           autoNotifyReceipt: autoNotifyReceipt,
         );
 
-  final _sessionEstablishedStream = StreamController<Session>();
-  final _sessionAuthenticationStream = StreamController<Session>();
-  final _sessionFinishedStream = StreamController<Session>();
-
   final onReceiveNotification = StreamController<Notification>();
   final onReceiveCommand = StreamController<Command>();
   final onReceiveMessage = StreamController<Message>();
 
-  Future<Session> establishSession(String identity, String instance, Authentication authentication) async {
-    Session session = await startNewSession();
+  final onSessionFinished = StreamController<Session>();
+  final onSessionFailed = StreamController<Session>();
 
+  late Function(Session) _onSessionAuthenticating;
+  late Function(Session) _onSessionEstablished;
+  late Function(Session) _onSessionFinished;
+
+  Future<Session> establishSession(
+      String identity, String instance, Authentication authentication) async {
+    Session session = await startNewSession();
     session = await authenticateSession(identity, instance, authentication);
 
     return session;
@@ -43,15 +46,38 @@ class ClientChannel extends Channel {
       throw Exception('Cannot finish a session in the $state state');
     }
 
+    final commandPromise = Future.any(
+      [
+        Future<Session>(() {
+          final c = Completer<Session>();
+
+          _onSessionFinished = (Session session) {
+            if (session.state == SessionState.finished) {
+              c.complete(session);
+            } else {
+              c.completeError('error - sendFinishingSession');
+            }
+          };
+
+          return c.future;
+        }),
+        Future(() {
+          final c = Completer<Session>();
+
+          Future.delayed(const Duration(milliseconds: 6000), () {
+            return c.completeError('Timeout reached - sendFinishingSession');
+          });
+
+          return c.future;
+        }),
+      ],
+    );
+
     sendSession(
       Session(id: sessionId, state: SessionState.finishing),
     );
 
-    await for (Session value in _sessionFinishedStream.stream) {
-      return value;
-    }
-
-    throw Exception('sendFinishingSession error');
+    return commandPromise;
   }
 
   Future<Session> startNewSession() async {
@@ -59,19 +85,69 @@ class ClientChannel extends Channel {
       throw Exception('Cannot start a session in the $state state');
     }
 
+    final commandPromise = Future.any(
+      [
+        Future<Session>(() {
+          final c = Completer<Session>();
+
+          _onSessionAuthenticating = (Session session) {
+            if (session.state == SessionState.authenticating) {
+              c.complete(session);
+            } else {
+              c.completeError('error - startNewSession');
+            }
+          };
+
+          return c.future;
+        }),
+        Future(() {
+          final c = Completer<Session>();
+
+          Future.delayed(const Duration(milliseconds: 6000), () {
+            return c.completeError('Timeout reached - startNewSession');
+          });
+
+          return c.future;
+        }),
+      ],
+    );
+
     sendSession(Session(state: SessionState.isNew));
-
-    await for (Session value in _sessionEstablishedStream.stream) {
-      return value;
-    }
-
-    throw Exception('startNewSession error');
+    return commandPromise;
   }
 
-  Future<Session> authenticateSession(String identity, String instance, Authentication authentication) async {
+  Future<Session> authenticateSession(
+      String identity, String instance, Authentication authentication) async {
     if (state != SessionState.authenticating) {
       throw Exception('Cannot authenticate a session in the $state state.');
     }
+
+    final commandPromise = Future.any(
+      [
+        Future<Session>(() {
+          final c = Completer<Session>();
+
+          _onSessionEstablished = (Session session) {
+            if (session.state == SessionState.established) {
+              c.complete(session);
+            } else {
+              c.completeError('error - authenticateSession');
+            }
+          };
+
+          return c.future;
+        }),
+        Future(() {
+          final c = Completer<Session>();
+
+          Future.delayed(const Duration(milliseconds: 6000), () {
+            return c.completeError('Timeout reached - authenticateSession');
+          });
+
+          return c.future;
+        }),
+      ],
+    );
 
     final session = Session(
       id: sessionId,
@@ -83,10 +159,7 @@ class ClientChannel extends Channel {
 
     sendSession(session);
 
-    await for (Session value in _sessionAuthenticationStream.stream) {
-      return value;
-    }
-    throw Exception('authenticateSession error');
+    return commandPromise;
   }
 
   @override
@@ -99,17 +172,24 @@ class ClientChannel extends Channel {
     }
 
     switch (session.state) {
+      case SessionState.negotiating:
+        break;
       case SessionState.authenticating:
-        print('onSession - authenticating');
-        _sessionEstablishedStream.sink.add(session);
+        _onSessionAuthenticating(session);
         break;
       case SessionState.established:
-        print('onSession - established');
-        _sessionAuthenticationStream.sink.add(session);
+        _onSessionEstablished(session);
         break;
       case SessionState.finished:
-        print('onSession - finished');
-        _sessionFinishedStream.sink.add(session);
+        transport.close().then((value) {
+          _onSessionFinished(session);
+          onSessionFinished.sink.add(session);
+        });
+        break;
+      case SessionState.failed:
+        transport.close().then((value) {
+          onSessionFailed.sink.add(session);
+        });
         break;
       default:
     }

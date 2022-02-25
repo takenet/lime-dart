@@ -11,10 +11,10 @@ class Envelope {
   static final MediaType notificationMediaType = MediaType.parse(notificationMimeType);
 
   final String id;
-  final Node? from;
-  final Node? to;
-  final Node? pp;
-  final Map<String, dynamic>? metadata;
+  Node? from;
+  Node? to;
+  Node? pp;
+  Map<String, dynamic>? metadata;
 
   Envelope({
     required this.id,

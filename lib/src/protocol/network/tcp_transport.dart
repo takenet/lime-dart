@@ -7,9 +7,13 @@ import '../envelope.dart';
 import 'transport.dart';
 
 class TCPTransport implements Transport {
-  StreamController<Map<String, dynamic>>? stream = StreamController<Map<String, dynamic>>();
+  StreamController<Map<String, dynamic>>? stream =
+      StreamController<Map<String, dynamic>>();
   WebSocket? socket;
   String? sessionId;
+
+  @override
+  StreamController<bool> onClose = StreamController<bool>();
 
   TCPTransport();
 
@@ -59,6 +63,7 @@ class TCPTransport implements Transport {
   @override
   Future<void> close() async {
     socket?.close();
+    onClose.sink.add(true);
   }
 
   @override
@@ -71,7 +76,8 @@ class TCPTransport implements Transport {
     print('message send: $encode\n');
   }
 
-  Future<void> sendSecureMessage(SecureSocket socket, Map<String, dynamic> message) async {
+  Future<void> sendSecureMessage(
+      SecureSocket socket, Map<String, dynamic> message) async {
     print('message send: $message\n');
     socket.add(utf8.encode(jsonEncode(message)));
     await Future.delayed(const Duration(seconds: 2));

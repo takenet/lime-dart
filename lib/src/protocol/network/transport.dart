@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../enums/session_compression.enum.dart';
 import '../enums/session_encryption.enum.dart';
 import '../envelope.dart';
@@ -13,4 +15,6 @@ abstract class Transport extends EnvelopeListener {
   SessionCompression? compression;
 
   SessionEncryption? encryption;
+
+  StreamController<bool> onClose = StreamController<bool>();
 }

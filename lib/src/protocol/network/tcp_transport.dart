@@ -6,6 +6,9 @@ import '../enums/session_compression.enum.dart';
 import '../envelope.dart';
 import 'transport.dart';
 
+import 'package:simple_logger/simple_logger.dart';
+import 'package:pretty_json/pretty_json.dart';
+
 class TCPTransport implements Transport {
   StreamController<Map<String, dynamic>>? stream =
       StreamController<Map<String, dynamic>>();
@@ -15,7 +18,14 @@ class TCPTransport implements Transport {
   @override
   StreamController<bool> onClose = StreamController<bool>();
 
-  TCPTransport();
+  final logger = SimpleLogger();
+
+  TCPTransport() {
+    logger.setLevel(
+      Level.INFO,
+      includeCallerInfo: true,
+    );
+  }
 
   @override
   Future<void> open(final String uri) async {
@@ -29,32 +39,28 @@ class TCPTransport implements Transport {
 
     // connect to the socket server
     socket = await WebSocket.connect(uri, protocols: ['lime']);
-    print('Connected to: hmg-ws.blip.ai:443');
+    logger.info('Connected to: $uri');
 
     // listen for responses from the server
     socket?.listen(
       // handle data from the server
       (data) {
         final response = jsonDecode(data);
-        //sessionId = response['id'];
 
-        print(
-          'message received: $response',
-        );
-        print('\n-------------------------------------------------------\n');
+        logger.info('Envelope received: \n' + prettyJson(response, indent: 2));
 
         onEvelope?.add(response);
       },
 
       // handle errors
       onError: (error) {
-        print('error: $error');
+        logger.shout('Error: $error');
         socket?.close();
       },
 
       // handle server ending connection
       onDone: () {
-        print('Server closed the connection.');
+        logger.warning('Server closed the connection.');
         socket?.close();
       },
     );
@@ -73,14 +79,9 @@ class TCPTransport implements Transport {
     ensureSocketOpen();
 
     socket?.add(encode);
-    print('message send: $encode\n');
-  }
 
-  Future<void> sendSecureMessage(
-      SecureSocket socket, Map<String, dynamic> message) async {
-    print('message send: $message\n');
-    socket.add(utf8.encode(jsonEncode(message)));
-    await Future.delayed(const Duration(seconds: 2));
+    logger
+        .info('Envelope send: \n' + prettyJson(jsonDecode(encode), indent: 2));
   }
 
   void ensureSocketOpen() {

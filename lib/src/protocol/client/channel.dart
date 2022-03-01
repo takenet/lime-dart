@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:simple_logger/simple_logger.dart';
 
 import '../command.dart';
 import '../enums/command_method.enum.dart';
@@ -23,23 +24,28 @@ abstract class Channel {
   String? sessionId;
   SessionState? state;
 
+  final logger = SimpleLogger();
+
   Channel({
     required this.transport,
     required this.autoReplyPings,
     required this.autoNotifyReceipt,
   }) {
+    logger.setLevel(
+      Level.INFO,
+      includeCallerInfo: true,
+    );
+
     state = SessionState.isNew;
 
     transport.onEvelope?.stream.listen(
       (event) {
-        print('event received on channel: $event\n');
-
         if (event.containsKey('state')) {
-          print('envelope is session');
+          logger.info('Received envelope is a Session');
           final session = Session.fromJson(event);
           onSession(session);
         } else if (event.containsKey('method')) {
-          print('envelope is command');
+          logger.info('Received envelope is a Command');
           final command = Command.fromJson(event);
 
           if (autoReplyPings &&
@@ -47,7 +53,7 @@ abstract class Channel {
               command.uri == '/ping' &&
               command.method == CommandMethod.get &&
               isForMe(command)) {
-            print('auto reply ping');
+            logger.info('Auto reply ping..');
 
             final commandSend = Command(
               id: command.id,
@@ -63,19 +69,17 @@ abstract class Channel {
 
           onCommand(command);
         } else if (event.containsKey('content')) {
-          print('envelope is message');
+          logger.info('Received envelope is a Message');
           final message = Message.fromJson(event);
           onMessage(message);
         } else if (event.containsKey('event')) {
-          print('envelope is notification');
+          logger.info('Received envelope is a Notification');
           final notification = Notification.fromJson(event);
           onNotification(notification);
         }
-
-        print('\n-------------------------------------------------------\n');
       },
-      onError: (e) => print('stream error: $e'),
-      onDone: () => print('stream done'),
+      onError: (e) => logger.shout('stream error: $e'),
+      onDone: () => logger.info('stream done'),
     );
   }
 
@@ -89,37 +93,6 @@ abstract class Channel {
     }
     return send(session);
   }
-
-  // Future processCommand(Command command, {int timeout = commandTimeout}) {
-  //   final responsePromise = Future<Command>(() {
-  //     final _completer = Completer<Command>();
-  //     _commandResolves[command.id] = _completer.complete;
-
-  //     return _completer.future;
-  //   });
-
-  //   final commandPromise = Future<Command>.any([
-  //     responsePromise,
-  //     Future<Command>(() {
-  //       final _completer = Completer<Command>();
-
-  //       Future.delayed(
-  //         Duration(milliseconds: timeout),
-  //         () {
-  //           if (_commandResolves[command.id] == null) return _completer.future;
-
-  //           _commandResolves.remove(command.id);
-
-  //           final cmd = jsonEncode(command);
-  //           return Future.error(Exception('The follow command processing has timed out: $cmd'));
-  //         },
-  //       );
-  //     }),
-  //   ]);
-
-  //   sendCommand(command);
-  //   return commandPromise;
-  // }
 
   Future<void> sendCommand(Command command) {
     if (state != SessionState.established) {
@@ -149,7 +122,10 @@ abstract class Channel {
   bool isForMe(Envelope envelope) {
     return envelope.to == null ||
         envelope.to.toString() == localNode?.toString() ||
-        localNode?.toString().substring(0, envelope.to.toString().length).toLowerCase() ==
+        localNode
+                ?.toString()
+                .substring(0, envelope.to.toString().length)
+                .toLowerCase() ==
             envelope.to.toString().toLowerCase();
   }
 

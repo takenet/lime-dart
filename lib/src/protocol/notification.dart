@@ -38,6 +38,10 @@ class Notification extends Envelope {
       notification['to'] = to.toString();
     }
 
+    if (metadata != null) {
+      notification['metadata'] = metadata;
+    }
+
     if (event != null) {
       notification[eventKey] = describeEnum(event!);
     }
@@ -64,7 +68,8 @@ class Notification extends Envelope {
       notification.reason = Reason.fromJson(json[reasonKey]);
     }
     if (json.containsKey(eventKey)) {
-      notification.event = NotificationEvent.values.firstWhere((e) => describeEnum(e) == json[eventKey]);
+      notification.event = NotificationEvent.values
+          .firstWhere((e) => describeEnum(e) == json[eventKey]);
     }
 
     return notification;

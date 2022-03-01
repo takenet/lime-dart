@@ -87,36 +87,36 @@ abstract class Channel {
     await transport.open(uri);
   }
 
-  Future<void> sendSession(Session session) {
+  void sendSession(Session session) {
     if (state == SessionState.finished || state == SessionState.failed) {
       throw Exception('Cannot send in the $state state');
     }
-    return send(session);
+    send(session);
   }
 
-  Future<void> sendCommand(Command command) {
+  void sendCommand(Command command) {
     if (state != SessionState.established) {
       throw Exception('Cannot send in the $state state');
     }
-    return send(command);
+    send(command);
   }
 
-  Future<void> sendNotification(Notification notification) {
+  void sendNotification(Notification notification) {
     if (state != SessionState.established) {
       throw Exception('Cannot send in the $state state');
     }
-    return send(notification);
+    send(notification);
   }
 
-  Future<void> sendMessage(Message message) {
+  void sendMessage(Message message) {
     if (state != SessionState.established) {
       throw Exception('Cannot send in the $state state');
     }
-    return send(message);
+    send(message);
   }
 
-  send(Envelope envelope) async {
-    await transport.send(envelope);
+  send(Envelope envelope) {
+    transport.send(envelope);
   }
 
   bool isForMe(Envelope envelope) {

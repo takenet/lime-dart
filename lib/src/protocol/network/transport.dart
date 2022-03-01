@@ -10,7 +10,7 @@ abstract class Transport extends EnvelopeListener {
   Future<void> open(final String uri);
   Future<void> close();
 
-  Future<void> send(Envelope envelope);
+  void send(Envelope envelope);
 
   SessionCompression? compression;
 

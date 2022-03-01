@@ -73,7 +73,7 @@ class TCPTransport implements Transport {
   }
 
   @override
-  Future<void> send(Envelope envelope) async {
+  void send(Envelope envelope) {
     String encode = jsonEncode(envelope);
 
     ensureSocketOpen();

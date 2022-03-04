@@ -9,9 +9,8 @@ import 'transport.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:pretty_json/pretty_json.dart';
 
-class TCPTransport implements Transport {
-  StreamController<Map<String, dynamic>>? stream =
-      StreamController<Map<String, dynamic>>();
+class WebSocketTransport implements Transport {
+  StreamController<Map<String, dynamic>>? stream = StreamController<Map<String, dynamic>>();
   WebSocket? socket;
   String? sessionId;
 
@@ -20,7 +19,7 @@ class TCPTransport implements Transport {
 
   final logger = SimpleLogger();
 
-  TCPTransport() {
+  WebSocketTransport() {
     logger.setLevel(
       Level.INFO,
       includeCallerInfo: true,
@@ -80,8 +79,7 @@ class TCPTransport implements Transport {
 
     socket?.add(encode);
 
-    logger
-        .info('Envelope send: \n' + prettyJson(jsonDecode(encode), indent: 2));
+    logger.info('Envelope send: \n' + prettyJson(jsonDecode(encode), indent: 2));
   }
 
   void ensureSocketOpen() {

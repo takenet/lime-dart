@@ -33,8 +33,7 @@ class ClientChannel extends Channel {
   late Function(Session) _onSessionEstablished;
   late Function(Session) _onSessionFinished;
 
-  Future<Session> establishSession(
-      String identity, String instance, Authentication authentication) async {
+  Future<Session> establishSession(String identity, String instance, Authentication authentication) async {
     Session session = await startNewSession();
     session = await authenticateSession(identity, instance, authentication);
 
@@ -116,8 +115,7 @@ class ClientChannel extends Channel {
     return commandPromise;
   }
 
-  Future<Session> authenticateSession(
-      String identity, String instance, Authentication authentication) async {
+  Future<Session> authenticateSession(String identity, String instance, Authentication authentication) async {
     if (state != SessionState.authenticating) {
       throw Exception('Cannot authenticate a session in the $state state.');
     }

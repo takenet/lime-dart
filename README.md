@@ -2,7 +2,7 @@
 
 > Dart implementation of LIME - A lightweight messaging library
 
-[![npm version](https://img.shields.io/npm/v/lime-js.svg?style=flat-square)](https://www.npmjs.com/package/lime-js)
+[![npm version](https://img.shields.io/pub/v/lime-dart.svg?style=flat-square)](https://pub.dev/packages/lime-dart)
 
 <!-- [![Build Status](https://travis-ci.org/takenet/lime-js.svg)](https://travis-ci.org/takenet/lime-js) -->
 
@@ -170,8 +170,8 @@ clientChannel.onReceiveNotification.stream.listen((Notification receivedNotifica
 ```dart
 // Arbitrary commands
 final getContactsCommand = Command(
-  id: Lime.Guid(),
-  method: CommandMethod.GET,
+  id: guid(),
+  method: CommandMethod.get,
   uri: MY_CONTACTS_URI
 );
 

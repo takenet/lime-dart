@@ -1,3 +1,4 @@
 ## 0.0.1
 
 * Start project structure
+* Created tests workflow

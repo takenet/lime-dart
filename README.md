@@ -1,8 +1,8 @@
-# lime-dart
+# LIME Dart
 
 > Dart implementation of LIME - A lightweight messaging library
 
-[![npm version](https://img.shields.io/pub/v/lime.svg?logo=github)](https://pub.dev/packages/lime)
+[![pub version](https://img.shields.io/pub/v/lime.svg?logo=github)](https://pub.dev/packages/lime)
 [![Test Status](https://github.com/takenet/lime-dart/actions/workflows/tests.yml/badge.svg)](https://github.com/takenet/lime-dart/actions)
 
 LIME allows you to build scalable, real-time messaging applications using a JSON-based [open protocol](http://limeprotocol.org). It's **fully asynchronous** and supports any persistent transport like TCP or Websockets.
@@ -40,20 +40,20 @@ When two nodes are connected to each other a **session** can be established betw
 
 ## How to use
 
-Simply install the `lime-dart` package from the [pub.dev](pub.dev) registry.
+Simply install the `lime` package from the [pub.dev](pub.dev) registry.
 
 With Dart:
 
-    dart pub add lime-dart
+    dart pub add lime
 
 With Flutter:
 
-    flutter pub add lime-dart
+    flutter pub add lime
 
 #### Example
 
 ```dart
-import 'package:path/path.dart';
+import 'package:lime/lime.dart';
 
 class MyClass {
   Iterable<Message> messages;
@@ -63,7 +63,7 @@ class MyClass {
 #### Or
 
 ```dart
-import 'package:path/path.dart' as Lime;
+import 'package:lime/lime.dart' as Lime;
 
 class MyClass {
   Iterable<Lime.Message> messages;

@@ -5,7 +5,7 @@
 [![pub version](https://img.shields.io/pub/v/lime.svg?logo=github)](https://pub.dev/packages/lime)
 [![Test Status](https://github.com/takenet/lime-dart/actions/workflows/tests.yml/badge.svg)](https://github.com/takenet/lime-dart/actions)
 
-LIME allows you to build scalable, real-time messaging applications using a JSON-based [open protocol](http://limeprotocol.org). It's **fully asynchronous** and supports any persistent transport like TCP or Websockets.
+LIME allows you to build scalable, real-time messaging applications using a JSON-based [open protocol](https://limeprotocol.org). It's **fully asynchronous** and supports any persistent transport like TCP or Websockets.
 
 You can send and receive any type of object into the wire as long it can be represented as JSON or text (plain or encoded with base64) and it has a **MIME type** to allow the other party handle it in the right way.
 

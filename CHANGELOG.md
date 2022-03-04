@@ -1,3 +1,7 @@
+## 0.0.4
+
+* Fixes for get more Pub Points
+
 ## 0.0.3
 
 * Readme github action link fix

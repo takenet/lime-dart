@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:simple_logger/simple_logger.dart';
 
-import '../../../lime.dart';
 import '../command.dart';
 import '../enums/command_method.enum.dart';
 import '../enums/command_status.enum.dart';
 import '../enums/session_state.enum.dart';
+import '../enums/notification_event.enum.dart';
 import '../envelope.dart';
 import '../message.dart';
 import '../network/transport.dart';

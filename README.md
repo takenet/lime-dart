@@ -3,7 +3,7 @@
 > Dart implementation of LIME - A lightweight messaging library
 
 [![npm version](https://img.shields.io/pub/v/lime.svg?logo=github)](https://pub.dev/packages/lime)
-[![Test Status](https://github.com/takenet/lime-dart/actions/workflows/tests.yml/badge.svg)](https://github.com/felangel/bloc/actions)
+[![Test Status](https://github.com/takenet/lime-dart/actions/workflows/tests.yml/badge.svg)](https://github.com/takenet/lime-dart/actions)
 
 LIME allows you to build scalable, real-time messaging applications using a JSON-based [open protocol](http://limeprotocol.org). It's **fully asynchronous** and supports any persistent transport like TCP or Websockets.
 

@@ -5,6 +5,8 @@ import 'guid.dart';
 import 'node.dart';
 import 'reason.dart';
 
+/// Transports information about events associated to a message in a session.
+/// Can be originated by a server or by the message destination node.
 class Notification extends Envelope {
   static const String eventKey = "event";
   static const String reasonKey = "reason";
@@ -25,21 +27,26 @@ class Notification extends Envelope {
   /// In the case of a failed event, brings more details about the problem.
   Reason? reason;
 
+  /// Allows converting a [Notification] object to a [Map] collection of key/value pairs
   Map<String, dynamic> toJson() {
     Map<String, dynamic> notification = {};
 
-    notification['id'] = id;
+    notification[Envelope.idKey] = id;
 
     if (from != null) {
-      notification['from'] = from.toString();
+      notification[Envelope.fromKey] = from.toString();
     }
 
     if (to != null) {
-      notification['to'] = to.toString();
+      notification[Envelope.toKey] = to.toString();
+    }
+
+    if (pp != null) {
+      notification[Envelope.ppKey] = pp.toString();
     }
 
     if (metadata != null) {
-      notification['metadata'] = metadata;
+      notification[Envelope.metadataKey] = metadata;
     }
 
     if (event != null) {
@@ -53,6 +60,7 @@ class Notification extends Envelope {
     return notification;
   }
 
+  /// Allows converting a collection of key/value pairs, [Map] to a [Notification] object
   factory Notification.fromJson(Map<String, dynamic> json) {
     final envelope = Envelope.fromJson(json);
 

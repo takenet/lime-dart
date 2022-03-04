@@ -1,3 +1,4 @@
+/// Defines the supported session states
 enum SessionState {
   /// The session is new and doesn't exists an
   /// established context. It is sent by a client

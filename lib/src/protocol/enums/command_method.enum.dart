@@ -1,3 +1,4 @@
+/// Defines methods for the manipulation of resources.
 enum CommandMethod {
   /// Gets an existing value of the resource.
   get,

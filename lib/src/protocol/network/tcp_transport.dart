@@ -9,12 +9,19 @@ import 'transport.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:pretty_json/pretty_json.dart';
 
+// Allows websocket communication based a Transport base class
 class TCPTransport implements Transport {
+  /// A [StreamController] to allow listening when a new envelope is received by the websocket
   StreamController<Map<String, dynamic>>? stream =
       StreamController<Map<String, dynamic>>();
+
+  // A websocket for communication
   WebSocket? socket;
+
+  // Allows saving the Session id
   String? sessionId;
 
+  /// A [StreamController] to allow listening when the close method is executed
   @override
   StreamController<bool> onClose = StreamController<bool>();
 

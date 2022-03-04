@@ -1,3 +1,4 @@
+/// Represents the status of a resource operation
 enum CommandStatus {
   /// The resource action is pending.
   pending,

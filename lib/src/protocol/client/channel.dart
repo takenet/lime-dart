@@ -14,14 +14,27 @@ import '../session.dart';
 
 const commandTimeout = 6000;
 
+/// Base class for the protocol communication channels.
 abstract class Channel {
+  /// The current session transport
   final Transport transport;
+
+  /// Allows automatically responding to ping commands
   final bool autoReplyPings;
+
+  /// Allows automatically notify receipt
   final bool autoNotifyReceipt;
 
+  /// Remote node identifier
   Node? remoteNode;
+
+  /// Local node identifier
   Node? localNode;
+
+  /// The session Id
   String? sessionId;
+
+  /// Current session state
   SessionState? state;
 
   final logger = SimpleLogger();
@@ -38,6 +51,7 @@ abstract class Channel {
 
     state = SessionState.isNew;
 
+    // Start listening to the stream
     transport.onEvelope?.stream.listen(
       (event) {
         if (event.containsKey('state')) {
@@ -83,10 +97,12 @@ abstract class Channel {
     );
   }
 
+  /// Open the connection with the transport
   Future<void> open(final String uri) async {
     await transport.open(uri);
   }
 
+  /// Allows sending a [Session] of type [Envelope]
   void sendSession(Session session) {
     if (state == SessionState.finished || state == SessionState.failed) {
       throw Exception('Cannot send in the $state state');
@@ -94,6 +110,7 @@ abstract class Channel {
     send(session);
   }
 
+  /// Allows sending a [Command] of type [Envelope]
   void sendCommand(Command command) {
     if (state != SessionState.established) {
       throw Exception('Cannot send in the $state state');
@@ -101,6 +118,7 @@ abstract class Channel {
     send(command);
   }
 
+  /// Allows sending a [Notification] of type [Envelope]
   void sendNotification(Notification notification) {
     if (state != SessionState.established) {
       throw Exception('Cannot send in the $state state');
@@ -108,6 +126,7 @@ abstract class Channel {
     send(notification);
   }
 
+  /// Allows sending a [Message] of type [Envelope]
   void sendMessage(Message message) {
     if (state != SessionState.established) {
       throw Exception('Cannot send in the $state state');
@@ -115,6 +134,7 @@ abstract class Channel {
     send(message);
   }
 
+  /// Allows sending a [Envelope]
   send(Envelope envelope) {
     transport.send(envelope);
   }
@@ -129,8 +149,15 @@ abstract class Channel {
             envelope.to.toString().toLowerCase();
   }
 
+  /// A function that will be executed when an [Envelope] of type [Message] is received by the [Transport] layer
   void onMessage(Message message) {}
+
+  /// A function that will be executed when an [Envelope] of type [Session] is received by the [Transport] layer
   void onSession(Session session) {}
+
+  /// A function that will be executed when an [Envelope] of type [Notification] is received by the [Transport] layer
   void onNotification(Notification notification) {}
+
+  /// A function that will be executed when an [Envelope] of type [Command] is received by the [Transport] layer
   void onCommand(Command command) {}
 }

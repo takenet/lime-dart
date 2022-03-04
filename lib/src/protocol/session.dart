@@ -84,21 +84,31 @@ class Session extends Envelope {
   /// details about the problem.
   Reason? reason;
 
+  /// Allows converting a [Session] object to a [Map] collection of key/value pairs
   Map<String, dynamic> toJson() {
     Map<String, dynamic> session = {};
 
     if (state != null) {
-      session[stateKey] = describeEnum(state!) == 'isNew' ? 'new' : describeEnum(state!);
+      session[stateKey] =
+          describeEnum(state!) == 'isNew' ? 'new' : describeEnum(state!);
     }
 
-    session['id'] = id;
+    session[Envelope.idKey] = id;
 
     if (from != null) {
-      session['from'] = from.toString();
+      session[Envelope.fromKey] = from.toString();
     }
 
     if (to != null) {
-      session['to'] = to.toString();
+      session[Envelope.toKey] = to.toString();
+    }
+
+    if (pp != null) {
+      session[Envelope.ppKey] = pp.toString();
+    }
+
+    if (metadata != null) {
+      session[Envelope.metadataKey] = metadata;
     }
 
     if (scheme != null) {
@@ -111,7 +121,8 @@ class Session extends Envelope {
         session[authenticationKey] = {"key": keyAuth.key};
       }
       if (authentication is ExternalAuthentication) {
-        ExternalAuthentication externalAuth = authentication as ExternalAuthentication;
+        ExternalAuthentication externalAuth =
+            authentication as ExternalAuthentication;
         session[authenticationKey] = {
           "token": externalAuth.token,
           "issuer": externalAuth.issuer,
@@ -123,6 +134,7 @@ class Session extends Envelope {
     return session;
   }
 
+  /// Allows converting a collection of key/value pairs, [Map] to a [Session] object
   factory Session.fromJson(Map<String, dynamic> json) {
     final envelope = Envelope.fromJson(json);
 
@@ -134,13 +146,16 @@ class Session extends Envelope {
     );
 
     if (json.containsKey(stateKey)) {
-      session.state = SessionState.values.firstWhere((e) => describeEnum(e) == json[stateKey]);
+      session.state = SessionState.values
+          .firstWhere((e) => describeEnum(e) == json[stateKey]);
     }
 
     if (json.containsKey(schemeOptionsKey)) {
       final schemeOptionsList = json[schemeOptionsKey] as List;
-      final schemeOptions =
-          schemeOptionsList.map((e) => AuthenticationScheme.values.firstWhere((e2) => describeEnum(e2) == e)).toList();
+      final schemeOptions = schemeOptionsList
+          .map((e) => AuthenticationScheme.values
+              .firstWhere((e2) => describeEnum(e2) == e))
+          .toList();
       session.schemeOptions = schemeOptions;
     }
 

@@ -1,3 +1,4 @@
+/// Domain role to use as Transport Authentication
 enum DomainRole {
   /// The identity is unknown in the domain.
   unknown,

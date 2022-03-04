@@ -2,6 +2,7 @@ import 'envelope.dart';
 import 'guid.dart';
 import 'node.dart';
 
+/// Provides the transport of a content between nodes in a network.
 class Message extends Envelope {
   static const String typeKey = 'type';
   static const String contentKey = 'content';
@@ -23,6 +24,7 @@ class Message extends Envelope {
   /// Message body content
   dynamic content;
 
+  /// Allows converting a collection of key/value pairs, [Map] to a [Message] object
   factory Message.fromJson(Map<String, dynamic> json) {
     final envelope = Envelope.fromJson(json);
 
@@ -44,17 +46,26 @@ class Message extends Envelope {
     return message;
   }
 
+  /// Allows converting a [Message] object to a [Map] collection of key/value pairs
   Map<String, dynamic> toJson() {
     Map<String, dynamic> message = {};
 
-    message['id'] = id;
+    message[Envelope.idKey] = id;
 
     if (from != null) {
-      message['from'] = from.toString();
+      message[Envelope.fromKey] = from.toString();
     }
 
     if (to != null) {
-      message['to'] = to.toString();
+      message[Envelope.toKey] = to.toString();
+    }
+
+    if (pp != null) {
+      message[Envelope.ppKey] = pp.toString();
+    }
+
+    if (metadata != null) {
+      message[Envelope.metadataKey] = metadata;
     }
 
     if (content != null) {

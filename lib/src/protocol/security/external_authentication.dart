@@ -2,6 +2,7 @@ import 'authentication.dart';
 import 'enums/authentication_scheme.enum.dart';
 import '../extensions/string.extension.dart';
 
+/// Defines a external authentication scheme, that uses third-party validation.
 class ExternalAuthentication extends Authentication {
   static const String tokenKey = 'token';
   static const String issuerKey = 'issuer';
@@ -12,8 +13,9 @@ class ExternalAuthentication extends Authentication {
   /// Gets or sets the trusted token issuer.
   String? issuer;
 
-  /// Initializes a new instance of the <see cref='ExternalAuthentication'/> class.
-  ExternalAuthentication({this.token, this.issuer}) : super(AuthenticationScheme.external);
+  /// Initializes a new instance of the [ExternalAuthentication] class.
+  ExternalAuthentication({this.token, this.issuer})
+      : super(AuthenticationScheme.external);
 
   /// Set a plain token to a base64 representation
   void setToBase64Token(final String? password) {

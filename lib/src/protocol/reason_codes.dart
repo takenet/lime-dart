@@ -1,3 +1,4 @@
+// Default server reason codes
 class ReasonCodes {
   /// General error
   static const int generalError = 1;

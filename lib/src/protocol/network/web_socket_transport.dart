@@ -9,11 +9,18 @@ import 'transport.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:pretty_json/pretty_json.dart';
 
+/// Allows websocket communication based a Transport base class
 class WebSocketTransport implements Transport {
-  StreamController<Map<String, dynamic>>? stream = StreamController<Map<String, dynamic>>();
+  StreamController<Map<String, dynamic>>? stream =
+      StreamController<Map<String, dynamic>>();
+
+  /// A websocket for communication
   WebSocket? socket;
+
+  /// Allows saving the Session id
   String? sessionId;
 
+  /// A [StreamController] to allow listening when the close method is executed
   @override
   StreamController<bool> onClose = StreamController<bool>();
 
@@ -79,7 +86,8 @@ class WebSocketTransport implements Transport {
 
     socket?.add(encode);
 
-    logger.info('Envelope send: \n' + prettyJson(jsonDecode(encode), indent: 2));
+    logger
+        .info('Envelope send: \n' + prettyJson(jsonDecode(encode), indent: 2));
   }
 
   void ensureSocketOpen() {

@@ -2,12 +2,15 @@ import 'authentication.dart';
 import 'enums/authentication_scheme.enum.dart';
 import '../extensions/string.extension.dart';
 
+/// Defines a plain authentication scheme, that uses a password for authentication.
+/// Should be used only with encrypted sessions.
 class PlainAuthentication extends Authentication {
   static const String passwordKey = 'password';
 
   /// Base64 representation of the identity password
   String? password;
 
+  /// Initializes a new instance of the [PlainAuthentication] class.
   PlainAuthentication({this.password}) : super(AuthenticationScheme.plain);
 
   /// Set a plain password to a Base64 representation

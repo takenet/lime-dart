@@ -1,3 +1,4 @@
+/// Represents the transport operations.
 enum DataOperation {
   /// A transport send operation
   send,

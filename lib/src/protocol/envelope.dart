@@ -8,7 +8,14 @@ class Envelope {
 
   static final MediaType commandMediaType = MediaType.parse(commandMimeType);
   static final MediaType messageMediaType = MediaType.parse(messageMimeType);
-  static final MediaType notificationMediaType = MediaType.parse(notificationMimeType);
+  static final MediaType notificationMediaType =
+      MediaType.parse(notificationMimeType);
+
+  static const String idKey = 'id';
+  static const String fromKey = 'from';
+  static const String toKey = 'to';
+  static const String ppKey = 'pp';
+  static const String metadataKey = 'metadata';
 
   final String id;
   Node? from;
@@ -24,12 +31,15 @@ class Envelope {
     this.metadata,
   });
 
+  /// Allows converting a collection of key/value pairs, [Map] to a [Envelope] object
   factory Envelope.fromJson(Map<String, dynamic> json) {
     return Envelope(
-        id: json.containsKey('id') ? json['id'] : null,
-        from: json.containsKey('from') ? Node.parse(json['from']) : null,
-        to: json.containsKey('to') ? Node.parse(json['to']) : null,
-        pp: json.containsKey('pp') ? Node.parse(json['pp']) : null,
-        metadata: json.containsKey('metadata') ? Map<String, String>.from(json['metadata']) : null);
+        id: json.containsKey(idKey) ? json[idKey] : null,
+        from: json.containsKey(fromKey) ? Node.parse(json[fromKey]) : null,
+        to: json.containsKey(toKey) ? Node.parse(json[toKey]) : null,
+        pp: json.containsKey(ppKey) ? Node.parse(json[ppKey]) : null,
+        metadata: json.containsKey(metadataKey)
+            ? Map<String, String>.from(json[metadataKey])
+            : null);
   }
 }

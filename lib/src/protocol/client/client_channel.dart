@@ -11,6 +11,7 @@ import '../session.dart';
 
 import 'channel.dart';
 
+/// Defines a communication channel between a node and a server.
 class ClientChannel extends Channel {
   ClientChannel(
     Transport transport, {
@@ -22,24 +23,40 @@ class ClientChannel extends Channel {
           autoNotifyReceipt: autoNotifyReceipt,
         );
 
+  /// Exposes a [StreamController] to allow listening when a new [Notification] is received by the channel
   final onReceiveNotification = StreamController<Notification>();
+
+  /// Exposes a [StreamController] to allow listening when a new [Command] is received by the channel
   final onReceiveCommand = StreamController<Command>();
+
+  /// Exposes a [StreamController] to allow listening when a new [Message] is received by the channel
   final onReceiveMessage = StreamController<Message>();
 
+  /// Exposes a [StreamController] to allow listening when a new [Session] with [SessionState.finished] type  is received by the channel
   final onSessionFinished = StreamController<Session>();
+
+  /// Exposes a [StreamController] to allow listening when a new [Session] with [SessionState.failed] type is received by the channel
   final onSessionFailed = StreamController<Session>();
 
+  /// A function that will be completed when  a [Session] of type [SessionState.authenticating] is received
   late Function(Session) _onSessionAuthenticating;
+
+  /// A function that will be completed when a [Session] of type [SessionState.established] is received
   late Function(Session) _onSessionEstablished;
+
+  /// A function that will be completed when a [Session] of type [SessionState.finished] is received
   late Function(Session) _onSessionFinished;
 
-  Future<Session> establishSession(String identity, String instance, Authentication authentication) async {
+  /// Establishes the session
+  Future<Session> establishSession(
+      String identity, String instance, Authentication authentication) async {
     Session session = await startNewSession();
     session = await authenticateSession(identity, instance, authentication);
 
     return session;
   }
 
+  /// Send a [Session] type [Envelope] with state [SessionState.finishing] to end the communication
   Future<Session> sendFinishingSession() async {
     if (state != SessionState.established) {
       throw Exception('Cannot finish a session in the $state state');
@@ -79,6 +96,7 @@ class ClientChannel extends Channel {
     return commandPromise;
   }
 
+  /// Send a [Session] type [Envelope] with state [SessionState.isNew] to start the communication
   Future<Session> startNewSession() async {
     if (state != SessionState.isNew) {
       throw Exception('Cannot start a session in the $state state');
@@ -115,7 +133,9 @@ class ClientChannel extends Channel {
     return commandPromise;
   }
 
-  Future<Session> authenticateSession(String identity, String instance, Authentication authentication) async {
+  /// Send a [Session] type [Envelope] with state [SessionState.authenticating] to start the authenticate
+  Future<Session> authenticateSession(
+      String identity, String instance, Authentication authentication) async {
     if (state != SessionState.authenticating) {
       throw Exception('Cannot authenticate a session in the $state state.');
     }

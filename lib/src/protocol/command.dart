@@ -7,6 +7,7 @@ import 'reason.dart';
 import 'enums/command_method.enum.dart';
 import 'enums/command_status.enum.dart';
 
+/// Allows the manipulation of node resources, like server session parameters or information related to the network nodes.
 class Command extends Envelope {
   static const String uriKey = 'uri';
   static const String typeKey = Message.typeKey;
@@ -48,17 +49,26 @@ class Command extends Envelope {
     this.type,
   }) : super(id: id ?? guid(), from: from, to: to, pp: pp, metadata: metadata);
 
+  /// Allows converting a [Command] object to a [Map] collection of key/value pairs
   Map<String, dynamic> toJson() {
     Map<String, dynamic> command = {};
 
-    command['id'] = id;
+    command[Envelope.idKey] = id;
 
     if (from != null) {
-      command['from'] = from.toString();
+      command[Envelope.fromKey] = from.toString();
     }
 
     if (to != null) {
-      command['to'] = to.toString();
+      command[Envelope.toKey] = to.toString();
+    }
+
+    if (pp != null) {
+      command[Envelope.ppKey] = pp.toString();
+    }
+
+    if (metadata != null) {
+      command[Envelope.metadataKey] = metadata;
     }
 
     if (method != null) {
@@ -88,6 +98,7 @@ class Command extends Envelope {
     return command;
   }
 
+  /// Allows converting a collection of key/value pairs, [Map] to a [Command] object
   factory Command.fromJson(Map<String, dynamic> json) {
     final envelope = Envelope.fromJson(json);
 
@@ -104,11 +115,13 @@ class Command extends Envelope {
     }
 
     if (json.containsKey(statusKey)) {
-      command.status = CommandStatus.values.firstWhere((e) => describeEnum(e) == json[statusKey]);
+      command.status = CommandStatus.values
+          .firstWhere((e) => describeEnum(e) == json[statusKey]);
     }
 
     if (json.containsKey(methodKey)) {
-      command.method = CommandMethod.values.firstWhere((e) => describeEnum(e) == json[methodKey]);
+      command.method = CommandMethod.values
+          .firstWhere((e) => describeEnum(e) == json[methodKey]);
     }
 
     if (json.containsKey(uriKey)) {

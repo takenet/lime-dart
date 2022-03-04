@@ -2,7 +2,7 @@
 
 > Dart implementation of LIME - A lightweight messaging library
 
-[![npm version](https://img.shields.io/pub/v/lime-dart.svg?style=flat-square)](https://pub.dev/packages/lime-dart)
+[![npm version](https://img.shields.io/pub/v/lime.svg?style=flat-square)](https://pub.dev/packages/lime)
 
 <!-- [![Build Status](https://travis-ci.org/takenet/lime-js.svg)](https://travis-ci.org/takenet/lime-js) -->
 

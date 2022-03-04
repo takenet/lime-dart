@@ -1,7 +1,8 @@
 name: lime
-description: lime protocol
+description: LIME Protocol - A lightweight messaging library
 version: 0.0.1
 homepage: https://limeprotocol.org/
+repository: https://github.com/takenet/lime-dart
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

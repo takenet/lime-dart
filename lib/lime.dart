@@ -15,8 +15,7 @@ export 'src/protocol/reason.dart' show Reason;
 export 'src/protocol/enums/command_method.enum.dart' show CommandMethod;
 export 'src/protocol/enums/command_status.enum.dart' show CommandStatus;
 export 'src/protocol/enums/notification_event.enum.dart' show NotificationEvent;
-export 'src/protocol/enums/session_compression.enum.dart'
-    show SessionCompression;
+export 'src/protocol/enums/session_compression.enum.dart' show SessionCompression;
 export 'src/protocol/enums/session_encryption.enum.dart' show SessionEncryption;
 export 'src/protocol/enums/session_state.enum.dart' show SessionState;
 export 'src/protocol/enums/presence_status.enum.dart' show PresenceStatus;
@@ -30,17 +29,12 @@ export 'src/protocol/identity.dart' show Identity;
 export 'src/protocol/session.dart' show Session;
 export 'src/protocol/presence.dart' show Presence;
 export 'src/protocol/security/authentication.dart' show Authentication;
-export 'src/protocol/security/guest_authentication.dart'
-    show GuestAuthentication;
+export 'src/protocol/security/guest_authentication.dart' show GuestAuthentication;
 export 'src/protocol/security/key_authentication.dart' show KeyAuthentication;
-export 'src/protocol/security/external_authentication.dart'
-    show ExternalAuthentication;
-export 'src/protocol/security/plain_authentication.dart'
-    show PlainAuthentication;
-export 'src/protocol/security/transport_authentication.dart'
-    show TransportAuthentication;
-export 'src/protocol/security/enums/authentication_scheme.enum.dart'
-    show AuthenticationScheme;
+export 'src/protocol/security/external_authentication.dart' show ExternalAuthentication;
+export 'src/protocol/security/plain_authentication.dart' show PlainAuthentication;
+export 'src/protocol/security/transport_authentication.dart' show TransportAuthentication;
+export 'src/protocol/security/enums/authentication_scheme.enum.dart' show AuthenticationScheme;
 export 'src/protocol/client/client_channel.dart' show ClientChannel;
 export 'src/protocol/network/transport.dart' show Transport;
-export 'src/protocol/network/tcp_transport.dart' show TCPTransport;
+export 'src/protocol/network/web_socket_transport.dart' show WebSocketTransport;

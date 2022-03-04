@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:simple_logger/simple_logger.dart';
 
+import '../../../lime.dart';
 import '../command.dart';
 import '../enums/command_method.enum.dart';
 import '../enums/command_status.enum.dart';
@@ -62,11 +63,7 @@ abstract class Channel {
           logger.info('Received envelope is a Command');
           final command = Command.fromJson(event);
 
-          if (autoReplyPings &&
-              command.id != null &&
-              command.uri == '/ping' &&
-              command.method == CommandMethod.get &&
-              isForMe(command)) {
+          if (autoReplyPings && command.uri == '/ping' && command.method == CommandMethod.get && isForMe(command)) {
             logger.info('Auto reply ping..');
 
             final commandSend = Command(
@@ -85,6 +82,7 @@ abstract class Channel {
         } else if (event.containsKey('content')) {
           logger.info('Received envelope is a Message');
           final message = Message.fromJson(event);
+          _notifyMessage(message);
           onMessage(message);
         } else if (event.containsKey('event')) {
           logger.info('Received envelope is a Notification');
@@ -139,13 +137,22 @@ abstract class Channel {
     transport.send(envelope);
   }
 
+  void _notifyMessage(Message message) {
+    if (autoNotifyReceipt && message.from != null && isForMe(message)) {
+      final notification = Notification(
+        id: message.id,
+        to: message.from,
+        event: NotificationEvent.received,
+      );
+
+      sendNotification(notification);
+    }
+  }
+
   bool isForMe(Envelope envelope) {
     return envelope.to == null ||
         envelope.to.toString() == localNode?.toString() ||
-        localNode
-                ?.toString()
-                .substring(0, envelope.to.toString().length)
-                .toLowerCase() ==
+        localNode?.toString().substring(0, envelope.to.toString().length).toLowerCase() ==
             envelope.to.toString().toLowerCase();
   }
 

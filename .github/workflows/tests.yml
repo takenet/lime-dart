@@ -25,6 +25,9 @@ jobs:
       # https://github.com/dart-lang/setup-dart/blob/main/README.md
       # - uses: dart-lang/setup-dart@v1
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      # You may pin to the exact commit or the version.
+      # uses: steebchen/flutter@55019e0f56278a7c84949e8e17c66e8f79d67290
+      - uses: steebchen/flutter@v1.1.0
 
       - name: Install dependencies
         run: flutter pub get

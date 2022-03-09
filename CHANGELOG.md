@@ -1,3 +1,7 @@
+## 0.0.5
+
+* Added timeout to command
+
 ## 0.0.4
 
 * Fixes for get more Pub Points

@@ -34,6 +34,9 @@ class Command extends Envelope {
   /// Indicates a reason for the status
   Reason? reason;
 
+  // Indicates that the command returned timeout
+  bool? timeout;
+
   /// Initializes a new instance of the Command class.
   Command({
     final String? id,
@@ -47,6 +50,7 @@ class Command extends Envelope {
     this.resource,
     this.status,
     this.type,
+    this.timeout,
   }) : super(id: id ?? guid(), from: from, to: to, pp: pp, metadata: metadata);
 
   /// Allows converting a [Command] object to a [Map] collection of key/value pairs

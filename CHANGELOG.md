@@ -1,3 +1,9 @@
+## 0.0.6
+
+* Presence Model fix:
+
+  - New fields on toJson method
+
 ## 0.0.5
 
 * Added timeout to command

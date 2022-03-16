@@ -1,3 +1,7 @@
+## 0.0.7
+
+* Created LimeException class
+
 ## 0.0.6
 
 * Presence Model fix:

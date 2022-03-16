@@ -38,3 +38,4 @@ export 'src/protocol/security/enums/authentication_scheme.enum.dart' show Authen
 export 'src/protocol/client/client_channel.dart' show ClientChannel;
 export 'src/protocol/network/transport.dart' show Transport;
 export 'src/protocol/network/web_socket_transport.dart' show WebSocketTransport;
+export 'src/protocol/network/lime.exception.dart' show LimeException;

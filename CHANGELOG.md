@@ -1,3 +1,7 @@
+## 0.0.6
+
+* Created LimeException class
+
 ## 0.0.5
 
 * Added timeout to command

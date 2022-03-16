@@ -6,7 +6,7 @@ import 'enums/presence_status.enum.dart';
 import 'enums/routing_rule.enum.dart';
 
 class Presence extends Document {
-  static const mimeType = "application/vnd.lime.presence+json";
+  static const mimeType = 'application/vnd.lime.presence+json';
 
   PresenceStatus? status;
 
@@ -50,6 +50,38 @@ class Presence extends Document {
 
     if (routingRule != null) {
       presence['routingRule'] = describeEnum(routingRule!);
+    }
+
+    if (message != null) {
+      presence['message'] = message;
+    }
+
+    if (lastSeen != null) {
+      presence['lastSeen'] = lastSeen!.toIso8601String();
+    }
+
+    if (priority != null) {
+      presence['priority'] = priority;
+    }
+
+    if (filterByDistance != null) {
+      presence['filterByDistance'] = filterByDistance;
+    }
+
+    if (roundRobin != null) {
+      presence['roundRobin'] = roundRobin;
+    }
+
+    if (echo != null) {
+      presence['echo'] = echo;
+    }
+
+    if (promiscuous != null) {
+      presence['promiscuous'] = promiscuous;
+    }
+
+    if ((instances?.length ?? 0) > 0) {
+      presence['instances'] = instances;
     }
 
     return presence;

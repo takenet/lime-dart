@@ -1,6 +1,12 @@
-## 0.0.6
+## 0.0.7
 
 * Created LimeException class
+
+## 0.0.6
+
+* Presence Model fix:
+
+  - New fields on toJson method
 
 ## 0.0.5
 

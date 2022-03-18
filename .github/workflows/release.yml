@@ -70,3 +70,28 @@ jobs:
           body_path: CHANGELOG.md
           draft: false
           prerelease: false
+          
+    
+  publish:
+    name: Upload package to pub.dev
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup credentials
+        run: | 
+          mkdir -p ~/.pub-cache 
+          cat <<EOF > ~/.pub-cache/credentials.json
+          {
+            "accessToken":"${{ secrets.OAUTH_ACCESS_TOKEN }}",
+            "refreshToken":"${{ secrets.OAUTH_REFRESH_TOKEN }}",
+            "tokenEndpoint":"https://accounts.google.com/o/oauth2/token",
+            "scopes": [ "openid", "https://www.googleapis.com/auth/userinfo.email" ],
+            "expiration": 1570721159347
+          }
+          EOF
+      - name: Publish package
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '2.10.3'
+      - run: flutter pub publish -f

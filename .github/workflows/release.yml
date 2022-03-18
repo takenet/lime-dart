@@ -54,7 +54,7 @@ jobs:
     needs: [auto-gen-tag, generate-changelog]
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{jobs.auto-gen-tag.outputs.tag}}
+      - run: echo ${{needs.auto-gen-tag.outputs.tag}}
       - name: Download changelog
         uses: actions/download-artifact@v2
         with:

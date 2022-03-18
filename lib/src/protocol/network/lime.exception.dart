@@ -4,9 +4,8 @@ import '../reason.dart';
 class LimeException extends Error {
   final CommandStatus status;
   final Reason reason;
-  final bool timeout;
 
-  LimeException(this.status, int code, {String? description, this.timeout = false})
+  LimeException(this.status, int code, {String? description})
       : reason = Reason(code: code, description: description);
 
   @override

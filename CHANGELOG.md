@@ -1,3 +1,7 @@
+## 0.0.8
+
+* Remove Timeout from LimeException class
+* Created new reason code from timeout
 ## 0.0.7
 
 * Created LimeException class

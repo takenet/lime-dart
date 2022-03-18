@@ -13,6 +13,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   auto-gen-tag:
+    name: Auto Generate Tag
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.gen-tag-step.outputs.tagname }}
@@ -23,12 +24,13 @@ jobs:
       with:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         tag_prefix: "v"
-        
   generate-changelog:
     if: ${{ startsWith(needs.auto-gen-tag.outputs.tag, 'v') }}
     name: Generate changelog
+    needs: auto-gen-tag
     runs-on: ubuntu-latest
     steps:
+      - run: echo ${{needs.auto-gen-tag.outputs.tag}}
       - name: Get latest published release tag
         id: get_latest_release
         uses: pozetroninc/github-action-get-latest-release@2b51d48e904071035d6632715d41966f516711dd

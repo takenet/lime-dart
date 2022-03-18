@@ -1,5 +1,8 @@
 // Default server reason codes
 class ReasonCodes {
+  /// Timeout error
+  static const int timeoutError = 0;
+
   /// General error
   static const int generalError = 1;
 

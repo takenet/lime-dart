@@ -30,7 +30,6 @@ jobs:
     needs: auto-gen-tag
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{needs.auto-gen-tag.outputs.tag}}
       - name: Get latest published release tag
         id: get_latest_release
         uses: pozetroninc/github-action-get-latest-release@2b51d48e904071035d6632715d41966f516711dd
@@ -55,6 +54,7 @@ jobs:
     needs: generate-changelog
     runs-on: ubuntu-latest
     steps:
+      - run: echo ${{jobs.auto-gen-tag.outputs.tag}}
       - name: Download changelog
         uses: actions/download-artifact@v2
         with:
@@ -65,8 +65,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ needs.auto-gen-tag.outputs.tag }}
-          release_name: Lime ${{ needs.auto-gen-tag.outputs.tag }}
+          tag_name: ${{ jobs.auto-gen-tag.outputs.tag }}
+          release_name: Lime ${{ jobs.auto-gen-tag.outputs.tag }}
           body_path: CHANGELOG.md
           draft: false
           prerelease: false

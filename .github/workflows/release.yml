@@ -51,7 +51,7 @@ jobs:
   # This workflow contains a single job called "build"
   create-release:
     name: Draft Github release
-    needs: generate-changelog
+    needs: [auto-gen-tag, generate-changelog]
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{jobs.auto-gen-tag.outputs.tag}}
@@ -65,8 +65,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ jobs.auto-gen-tag.outputs.tag }}
-          release_name: Lime ${{ jobs.auto-gen-tag.outputs.tag }}
+          tag_name: ${{ needs.auto-gen-tag.outputs.tag }}
+          release_name: Lime ${{ needs.auto-gen-tag.outputs.tag }}
           body_path: CHANGELOG.md
           draft: false
           prerelease: false

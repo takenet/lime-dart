@@ -23,4 +23,5 @@ enum CommandMethod {
 
   /// Merges the resource document with an existing one. If the resource doesn't exists, it is created.
   merge,
+  a,
 }

@@ -41,7 +41,7 @@ jobs:
         uses: charmixer/auto-changelog-action@5c6320ae4dedc8743e4439a3c56294c294553fb9
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          future_release: ${{ github.ref }}
+          future_release: ${{ needs.auto-gen-tag.outputs.tag }}
           since_tag: ${{ steps.get_latest_release.outputs.release }}
       - name: Upload changelog
         uses: actions/upload-artifact@v2
@@ -65,8 +65,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Lime ${{ github.ref }}
+          tag_name: ${{ needs.auto-gen-tag.outputs.tag }}
+          release_name: Lime ${{ needs.auto-gen-tag.outputs.tag }}
           body_path: CHANGELOG.md
           draft: false
           prerelease: false

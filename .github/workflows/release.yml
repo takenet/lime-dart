@@ -70,8 +70,7 @@ jobs:
           body_path: CHANGELOG.md
           draft: false
           prerelease: false
-          
-    
+
   publish:
     name: Upload package to pub.dev
     needs: create-release

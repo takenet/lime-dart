@@ -1,3 +1,7 @@
+## 0.0.11
+
+* New onNegotiationgStatus on ClientChannel
+* New extension on NotificationEvent
 ## 0.0.8
 
 * Remove Timeout from LimeException class

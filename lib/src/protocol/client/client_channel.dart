@@ -41,6 +41,9 @@ class ClientChannel extends Channel {
   /// A function that will be completed when  a [Session] of type [SessionState.authenticating] is received
   late Function(Session) _onSessionAuthenticating;
 
+  /// A function that will be completed when  a [Session] of type [SessionState.authenticating] is received
+  late Function(Session) _onSessionNegotiating;
+
   /// A function that will be completed when a [Session] of type [SessionState.established] is received
   late Function(Session) _onSessionEstablished;
 
@@ -48,8 +51,7 @@ class ClientChannel extends Channel {
   late Function(Session) _onSessionFinished;
 
   /// Establishes the session
-  Future<Session> establishSession(
-      String identity, String instance, Authentication authentication) async {
+  Future<Session> establishSession(String identity, String instance, Authentication authentication) async {
     Session session = await startNewSession();
     session = await authenticateSession(identity, instance, authentication);
 
@@ -115,6 +117,14 @@ class ClientChannel extends Channel {
             }
           };
 
+          _onSessionNegotiating = (Session session) {
+            if (session.state == SessionState.negotiating) {
+              c.complete(session);
+            } else {
+              c.completeError('error - startNewSession');
+            }
+          };
+
           return c.future;
         }),
         Future(() {
@@ -134,8 +144,7 @@ class ClientChannel extends Channel {
   }
 
   /// Send a [Session] type [Envelope] with state [SessionState.authenticating] to start the authenticate
-  Future<Session> authenticateSession(
-      String identity, String instance, Authentication authentication) async {
+  Future<Session> authenticateSession(String identity, String instance, Authentication authentication) async {
     if (state != SessionState.authenticating) {
       throw Exception('Cannot authenticate a session in the $state state.');
     }
@@ -191,6 +200,7 @@ class ClientChannel extends Channel {
 
     switch (session.state) {
       case SessionState.negotiating:
+        _onSessionNegotiating(session);
         break;
       case SessionState.authenticating:
         _onSessionAuthenticating(session);

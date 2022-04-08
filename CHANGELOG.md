@@ -1,3 +1,7 @@
+## 0.0.14
+
+* Fixed NotificationEventExtension
+
 ## 0.0.13
 
 * Changed NotificationEventExtension logic

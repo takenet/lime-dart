@@ -1,3 +1,7 @@
+## 0.0.13
+
+* Changed NotificationEventExtension logic
+
 ## 0.0.12
 
 * Exported NotificationEventExtension

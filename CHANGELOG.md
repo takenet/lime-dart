@@ -1,3 +1,7 @@
+## 0.0.12
+
+* Exported NotificationEventExtension
+
 ## 0.0.11
 
 * New onNegotiationgStatus on ClientChannel

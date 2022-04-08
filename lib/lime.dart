@@ -2,6 +2,7 @@ library lime;
 
 export 'src/protocol/guid.dart' show guid;
 export 'src/protocol/extensions/string.extension.dart' show StringExtension;
+export 'src/protocol/extensions/notification_event.extension.dart' show NotificationEventExtension;
 export 'src/protocol/command.dart' show Command;
 export 'src/protocol/document.dart' show Document;
 export 'src/protocol/envelope.dart' show Envelope;

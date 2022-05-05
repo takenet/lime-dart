@@ -1,0 +1,13 @@
+{
+    "authentication": {
+        "issuer": "account.blip.ai",
+        "scheme": "external",
+        "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjRlY2RmZmViNjJlYjA0ZW.."
+    },
+    "from": "andre.rossi%40take.net@blip.ai/!desk",
+    "id": "571c06ca-dfed-4101-9e97-0d0b9ccf8d24",
+    "scheme": "external",
+    "state": "authenticating",
+    "schemeOptions": ["guest", "plain", "transport", "key", "external"],
+    "reason": {"code": 0, "description": "Timeout"}
+}

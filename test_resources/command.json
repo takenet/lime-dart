@@ -1,0 +1,12 @@
+{
+    "from": "postmaster@desk.msging.net/!hmg-az-iris2",
+    "id": "78bf09f7-39ae-46bb-a293-3f66d3464ce0",
+    "metadata": {"server.shouldStore": "True", "#command.uri": "lime://andre.rossi%40take.net@blip.ai/tickets/active"},
+    "method": "get",
+    "resource": {"total": 8, "itemType": "application/vnd.iris.ticket+json", "items": []},
+    "status": "success",
+    "to": "andre.rossi%40take.net@blip.ai/!desk",
+    "type": "application/vnd.lime.collection+json",
+    "uri": "/ping",
+    "reason": {"code": 0, "description": "Timeout"}
+}

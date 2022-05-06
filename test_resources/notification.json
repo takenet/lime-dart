@@ -1,0 +1,7 @@
+{
+    "id": "78bf09f7-39ae-46bb-a293-3f66d3464ce0",
+    "from": "postmaster@blip.ai/#hmg-az-iris2",
+    "to": "andre.rossi%40take.net@blip.ai/!desk",
+    "event": "failed",
+    "reason": {"code": 0, "description": "Timeout"}
+}

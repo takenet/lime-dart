@@ -54,7 +54,7 @@ class Notification extends Envelope {
     }
 
     if (reason != null) {
-      notification[reasonKey] = describeEnum(reasonKey);
+      notification[reasonKey] = reason?.toJson();
     }
 
     return notification;

@@ -1,3 +1,8 @@
+## 0.0.15
+
+* Removed unused 'timeout' from command class
+* added unit tests
+
 ## 0.0.14
 
 * Fixed NotificationEventExtension

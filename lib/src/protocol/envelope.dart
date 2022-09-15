@@ -1,3 +1,4 @@
+import 'guid.dart';
 import 'media_type.dart';
 import 'node.dart';
 
@@ -34,7 +35,7 @@ class Envelope {
   /// Allows converting a collection of key/value pairs, [Map] to a [Envelope] object
   factory Envelope.fromJson(Map<String, dynamic> json) {
     return Envelope(
-        id: json.containsKey(idKey) ? json[idKey] : null,
+        id: json.containsKey(idKey) ? json[idKey] : guid(),
         from: json.containsKey(fromKey) ? Node.parse(json[fromKey]) : null,
         to: json.containsKey(toKey) ? Node.parse(json[toKey]) : null,
         pp: json.containsKey(ppKey) ? Node.parse(json[ppKey]) : null,

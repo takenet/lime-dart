@@ -53,7 +53,7 @@ abstract class Channel {
     state = SessionState.isNew;
 
     // Start listening to the stream
-    transport.onEvelope?.stream.listen(
+    transport.onEnvelope?.stream.listen(
       (event) {
         if (event.containsKey('state')) {
           logger.info('Received envelope is a Session');

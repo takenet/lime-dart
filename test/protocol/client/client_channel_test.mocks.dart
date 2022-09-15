@@ -65,8 +65,8 @@ class MockWebSocketTransport extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#encryption, _encryption),
           returnValueForMissingStub: null);
   @override
-  set onEvelope(_i2.StreamController<Map<String, dynamic>>? _onEvelope) =>
-      super.noSuchMethod(Invocation.setter(#onEvelope, _onEvelope),
+  set onEnvelope(_i2.StreamController<Map<String, dynamic>>? _onEnvelope) =>
+      super.noSuchMethod(Invocation.setter(#onEnvelope, _onEnvelope),
           returnValueForMissingStub: null);
   @override
   _i2.Future<void> open(String? uri) =>

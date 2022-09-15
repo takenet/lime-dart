@@ -53,9 +53,9 @@ class WebSocketTransport implements Transport {
       (data) {
         final response = jsonDecode(data);
 
-        logger.info('Envelope received: \n' + prettyJson(response, indent: 2));
+        logger.info('Envelope received: $uri \n' + prettyJson(response, indent: 2));
 
-        onEvelope?.add(response);
+        onEnvelope?.add(response);
       },
 
       // handle errors
@@ -97,11 +97,11 @@ class WebSocketTransport implements Transport {
   }
 
   @override
-  get onEvelope => stream;
+  get onEnvelope => stream;
 
   @override
-  set onEvelope(StreamController<Map<String, dynamic>>? _onEvelope) {
-    stream = _onEvelope;
+  set onEnvelope(StreamController<Map<String, dynamic>>? _onEnvelope) {
+    stream = _onEnvelope;
   }
 
   @override

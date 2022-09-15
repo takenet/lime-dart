@@ -7,6 +7,7 @@ import 'security/enums/authentication_scheme.enum.dart';
 import 'security/external_authentication.dart';
 import 'security/key_authentication.dart';
 import 'security/authentication.dart';
+import 'security/plain_authentication.dart';
 import 'enums/session_compression.enum.dart';
 import 'enums/session_encryption.enum.dart';
 import 'enums/session_state.enum.dart';
@@ -117,17 +118,18 @@ class Session extends Envelope {
 
     if (authentication != null) {
       if (authentication is KeyAuthentication) {
-        KeyAuthentication keyAuth = authentication as KeyAuthentication;
+        final keyAuth = authentication as KeyAuthentication;
         session[authenticationKey] = {"key": keyAuth.key};
-      }
-      if (authentication is ExternalAuthentication) {
-        ExternalAuthentication externalAuth =
-            authentication as ExternalAuthentication;
+      } else if (authentication is ExternalAuthentication) {
+        final externalAuth = authentication as ExternalAuthentication;
         session[authenticationKey] = {
           "token": externalAuth.token,
           "issuer": externalAuth.issuer,
           "scheme": describeEnum(externalAuth.scheme)
         };
+      } else if (authentication is PlainAuthentication) {
+        final plainAuth = authentication as PlainAuthentication;
+        session[authenticationKey] = {'password': plainAuth.password};
       }
     }
 
@@ -146,8 +148,7 @@ class Session extends Envelope {
     );
 
     if (json.containsKey(stateKey)) {
-      session.state = SessionState.values
-          .firstWhere((e) => describeEnum(e) == json[stateKey]);
+      session.state = SessionState.values.firstWhere((e) => describeEnum(e) == json[stateKey]);
     }
 
     if (json.containsKey(schemeOptionsKey)) {

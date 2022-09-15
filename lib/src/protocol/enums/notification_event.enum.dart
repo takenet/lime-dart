@@ -1,18 +1,9 @@
-enum NotificationEvent {
-  /// A problem occurred during the processing of the message.
-  failed,
+export 'package:lime/src/protocol/extensions/notification_event.extension.dart';
 
+enum NotificationEvent {
   /// The message was received and accepted by the server.
   /// This event is similar to the <see cref="Received"/> but is emitted by an intermediate node (hop) and not by the message's final destination.
   accepted,
-
-  /// The message format was validated by the server.
-  @Deprecated("This specific event should not be sent anymore")
-  validated,
-
-  /// The dispatch of the message was authorized by the server.
-  @Deprecated("This specific event should not be sent anymore")
-  authorized,
 
   /// The message was dispatched to the destination by the server.
   /// This event is similar to the <see cref="Consumed"/> but is emitted by an intermediate node (hop) and not by the message's final destination.
@@ -23,6 +14,17 @@ enum NotificationEvent {
 
   /// The node has consumed the content of the message.
   consumed,
+
+  /// A problem occurred during the processing of the message.
+  failed,
+
+  /// The message format was validated by the server.
+  @Deprecated("This specific event should not be sent anymore")
+  validated,
+
+  /// The dispatch of the message was authorized by the server.
+  @Deprecated("This specific event should not be sent anymore")
+  authorized,
 
   unknown,
 }

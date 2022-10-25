@@ -38,6 +38,9 @@ class ClientChannel extends Channel {
   /// Exposes a [StreamController] to allow listening when a new [Session] with [SessionState.failed] type is received by the channel
   final onSessionFailed = StreamController<Session>();
 
+  /// Exposes a [StreamController] to allow listening when the server closes the connection
+  final onConnectionDone = StreamController<bool>();
+
   /// A function that will be completed when  a [Session] of type [SessionState.authenticating] is received
   late Function(Session) _onSessionAuthenticating;
 
@@ -51,7 +54,8 @@ class ClientChannel extends Channel {
   late Function(Session) _onSessionFinished;
 
   /// Establishes the session
-  Future<Session> establishSession(String identity, String instance, Authentication authentication) async {
+  Future<Session> establishSession(
+      String identity, String instance, Authentication authentication) async {
     Session session = await startNewSession();
     session = await authenticateSession(identity, instance, authentication);
 
@@ -144,7 +148,8 @@ class ClientChannel extends Channel {
   }
 
   /// Send a [Session] type [Envelope] with state [SessionState.authenticating] to start the authenticate
-  Future<Session> authenticateSession(String identity, String instance, Authentication authentication) async {
+  Future<Session> authenticateSession(
+      String identity, String instance, Authentication authentication) async {
     if (state != SessionState.authenticating) {
       throw Exception('Cannot authenticate a session in the $state state.');
     }
@@ -236,5 +241,10 @@ class ClientChannel extends Channel {
   @override
   void onMessage(Message message) {
     onReceiveMessage.sink.add(message);
+  }
+
+  @override
+  void onCloseConnection(bool closed) {
+    onConnectionDone.sink.add(closed);
   }
 }

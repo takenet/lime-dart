@@ -11,8 +11,10 @@ import 'package:pretty_json/pretty_json.dart';
 
 /// Allows websocket communication based a Transport base class
 class WebSocketTransport implements Transport {
-  StreamController<Map<String, dynamic>>? stream =
+  StreamController<Map<String, dynamic>>? onEnvelopeStream =
       StreamController<Map<String, dynamic>>();
+
+  StreamController<bool>? onConnectionDoneStream = StreamController<bool>();
 
   /// A websocket for communication
   WebSocket? socket;
@@ -53,7 +55,8 @@ class WebSocketTransport implements Transport {
       (data) {
         final response = jsonDecode(data);
 
-        logger.info('Envelope received: $uri \n' + prettyJson(response, indent: 2));
+        logger.info(
+            'Envelope received: $uri \n' + prettyJson(response, indent: 2));
 
         onEnvelope?.add(response);
       },
@@ -67,6 +70,7 @@ class WebSocketTransport implements Transport {
       // handle server ending connection
       onDone: () {
         logger.warning('Server closed the connection.');
+        onConnectionDone?.add(true);
         socket?.close();
       },
     );
@@ -97,11 +101,19 @@ class WebSocketTransport implements Transport {
   }
 
   @override
-  get onEnvelope => stream;
+  get onEnvelope => onEnvelopeStream;
 
   @override
   set onEnvelope(StreamController<Map<String, dynamic>>? _onEnvelope) {
-    stream = _onEnvelope;
+    onEnvelopeStream = _onEnvelope;
+  }
+
+  @override
+  get onConnectionDone => onConnectionDoneStream;
+
+  @override
+  set onConnectionDone(StreamController<bool>? _onConnectionDone) {
+    onConnectionDoneStream = _onConnectionDone;
   }
 
   @override

@@ -63,7 +63,10 @@ abstract class Channel {
           logger.info('Received envelope is a Command');
           final command = Command.fromJson(event);
 
-          if (autoReplyPings && command.uri == '/ping' && command.method == CommandMethod.get && isForMe(command)) {
+          if (autoReplyPings &&
+              command.uri == '/ping' &&
+              command.method == CommandMethod.get &&
+              isForMe(command)) {
             logger.info('Auto reply ping..');
 
             final commandSend = Command(
@@ -93,6 +96,11 @@ abstract class Channel {
       onError: (e) => logger.shout('stream error: $e'),
       onDone: () => logger.info('stream done'),
     );
+
+    //Start listening to onConnectionDone Stream
+    transport.onConnectionDone?.stream.listen((bool closed) {
+      onCloseConnection(closed);
+    });
   }
 
   /// Open the connection with the transport
@@ -152,7 +160,10 @@ abstract class Channel {
   bool isForMe(Envelope envelope) {
     return envelope.to == null ||
         envelope.to.toString() == localNode?.toString() ||
-        localNode?.toString().substring(0, envelope.to.toString().length).toLowerCase() ==
+        localNode
+                ?.toString()
+                .substring(0, envelope.to.toString().length)
+                .toLowerCase() ==
             envelope.to.toString().toLowerCase();
   }
 
@@ -167,4 +178,7 @@ abstract class Channel {
 
   /// A function that will be executed when an [Envelope] of type [Command] is received by the [Transport] layer
   void onCommand(Command command) {}
+
+  /// A function that will be executed when the server close the connection
+  void onCloseConnection(bool closed) {}
 }

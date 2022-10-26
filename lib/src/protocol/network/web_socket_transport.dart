@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/services.dart';
+
+import '../../utils/lime.utils.dart';
 import '../enums/session_encryption.enum.dart';
 import '../enums/session_compression.enum.dart';
 import '../envelope.dart';
+import '../exceptions/insecure_socket.exception.dart';
 import 'transport.dart';
 
 import 'package:simple_logger/simple_logger.dart';
@@ -36,7 +40,23 @@ class WebSocketTransport implements Transport {
   }
 
   @override
-  Future<void> open(final String uri) async {
+  Future<void> open(
+    final String uri, {
+    final bool forceSecureConnection = false,
+  }) async {
+    HttpClient? customClient;
+
+    if (forceSecureConnection) {
+      List<int> keyBytes = await _getKeyBytes();
+      List<int> certificateChainBytes = await _getCertificateChainBytes();
+
+      final context = SecurityContext(withTrustedRoots: true);
+      context.usePrivateKeyBytes(keyBytes);
+      context.useCertificateChainBytes(certificateChainBytes);
+
+      customClient = HttpClient(context: context);
+    }
+
     if (uri.contains('wss://')) {
       encryption = SessionEncryption.tls;
     } else {
@@ -45,35 +65,42 @@ class WebSocketTransport implements Transport {
 
     compression = SessionCompression.none;
 
-    // connect to the socket server
-    socket = await WebSocket.connect(uri, protocols: ['lime']);
-    logger.info('Connected to: $uri');
+    try {
+      // connect to the socket server
+      socket = await WebSocket.connect(uri, customClient: customClient);
+      logger.info('Connected to: $uri');
 
-    // listen for responses from the server
-    socket?.listen(
-      // handle data from the server
-      (data) {
-        final response = jsonDecode(data);
+      // listen for responses from the server
+      socket?.listen(
+        // handle data from the server
+        (data) {
+          final response = jsonDecode(data);
 
-        logger.info(
-            'Envelope received: $uri \n' + prettyJson(response, indent: 2));
+          logger.info(
+              'Envelope received: $uri \n' + prettyJson(response, indent: 2));
 
-        onEnvelope?.add(response);
-      },
+          onEnvelope?.add(response);
+        },
 
-      // handle errors
-      onError: (error) {
-        logger.shout('Error: $error');
-        socket?.close();
-      },
+        // handle errors
+        onError: (error) {
+          logger.shout('Error: $error');
+          socket?.close();
+        },
 
-      // handle server ending connection
-      onDone: () {
-        logger.warning('Server closed the connection.');
-        onConnectionDone?.add(true);
-        socket?.close();
-      },
-    );
+        // handle server ending connection
+        onDone: () {
+          logger.warning('Server closed the connection.');
+          onConnectionDone?.add(true);
+          socket?.close();
+        },
+      );
+    } on WebSocketException catch (e) {
+      if (e.message.endsWith('was not upgraded to websocket')) {
+        throw InsecureSocketException(
+            'This connection is not secure. Please contact the system administrator.');
+      }
+    }
   }
 
   @override
@@ -121,4 +148,18 @@ class WebSocketTransport implements Transport {
 
   @override
   SessionEncryption? encryption;
+
+  Future<List<int>> _getKeyBytes() async {
+    return (await rootBundle
+            .load('packages/${LimeUtils.packageName}/assets/keys/private.key'))
+        .buffer
+        .asInt8List();
+  }
+
+  Future<List<int>> _getCertificateChainBytes() async {
+    return (await rootBundle.load(
+            'packages/${LimeUtils.packageName}/assets/keys/certificate.cer'))
+        .buffer
+        .asInt8List();
+  }
 }

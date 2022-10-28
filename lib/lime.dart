@@ -43,6 +43,8 @@ export 'src/protocol/security/transport_authentication.dart'
     show TransportAuthentication;
 export 'src/protocol/security/enums/authentication_scheme.enum.dart'
     show AuthenticationScheme;
+export 'package:lime/src/protocol/extensions/authentication_schema.extension.dart'
+    show AuthenticationSchemaExtension;
 export 'src/protocol/client/client_channel.dart' show ClientChannel;
 export 'src/protocol/network/transport.dart' show Transport;
 export 'src/protocol/network/web_socket_transport.dart' show WebSocketTransport;

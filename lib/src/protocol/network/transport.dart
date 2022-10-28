@@ -11,7 +11,7 @@ abstract class Transport extends EnvelopeListener {
   /// Opens the transport connection with the specified Uri.
   Future<void> open(
     final String uri, {
-    final bool forceSecureConnection = false,
+    final bool useMtls = false,
   });
 
   /// Closes the connection

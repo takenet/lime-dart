@@ -42,11 +42,11 @@ class WebSocketTransport implements Transport {
   @override
   Future<void> open(
     final String uri, {
-    final bool forceSecureConnection = false,
+    final bool useMtls = false,
   }) async {
     HttpClient? customClient;
 
-    if (forceSecureConnection) {
+    if (useMtls) {
       List<int> keyBytes = await _getKeyBytes();
       List<int> certificateChainBytes = await _getCertificateChainBytes();
 
@@ -100,6 +100,9 @@ class WebSocketTransport implements Transport {
         throw InsecureSocketException(
             'This connection is not secure. Please contact the system administrator.');
       }
+    } on HandshakeException {
+      throw InsecureSocketException(
+          'This connection is not secure. Please contact the system administrator.');
     }
   }
 

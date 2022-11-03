@@ -69,7 +69,7 @@ class MockWebSocketTransport extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#onEnvelope, _onEnvelope),
           returnValueForMissingStub: null);
   @override
-  _i2.Future<void> open(String? uri, {bool forceSecureConnection = false}) =>
+  _i2.Future<void> open(String? uri, {bool useMtls = false}) =>
       (super.noSuchMethod(Invocation.method(#open, [uri]),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i2.Future<void>);

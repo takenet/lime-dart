@@ -24,7 +24,7 @@ void main() {
       final command = Command.fromJson(json);
 
       expect(command.metadata, equals(json['metadata']));
-      expect(describeEnum(command.method!), equals(json['method']));
+      expect(describeEnum(command.method), equals(json['method']));
       expect(command.resource, equals(json['resource']));
       expect(describeEnum(command.status!), equals(json['status']));
       expect(command.type, equals(json['type']));
@@ -47,7 +47,7 @@ void main() {
       final jsonDoc = command.toJson();
 
       expect(jsonDoc['metadata'], equals(command.metadata));
-      expect(jsonDoc['method'], equals(describeEnum(command.method!)));
+      expect(jsonDoc['method'], equals(describeEnum(command.method)));
       expect(jsonDoc['resource'], equals(command.resource));
       expect(jsonDoc['status'], equals(describeEnum(command.status!)));
       expect(jsonDoc['type'], equals(command.type));

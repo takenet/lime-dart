@@ -32,7 +32,6 @@ class _FakeSimpleLogger_1 extends _i1.Fake implements _i3.SimpleLogger {}
 /// See the documentation for Mockito's code generation for more information.
 class MockWebSocketTransport extends _i1.Mock
     implements _i4.WebSocketTransport {
-  @override
   set stream(_i2.StreamController<Map<String, dynamic>>? _stream) =>
       super.noSuchMethod(Invocation.setter(#stream, _stream),
           returnValueForMissingStub: null);

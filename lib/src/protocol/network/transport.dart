@@ -9,7 +9,10 @@ import 'envelope_listener.dart';
 /// Base class for the supported transport types
 abstract class Transport extends EnvelopeListener {
   /// Opens the transport connection with the specified Uri.
-  Future<void> open(final String uri);
+  Future<void> open(
+    final String uri, {
+    final bool useMtls = false,
+  });
 
   /// Closes the connection
   Future<void> close();

@@ -25,11 +25,12 @@ void main() {
   });
 
   group('Identity.tryParse()', () {
-    test('should returns false', () {
-      expect(Identity.tryParse(''), equals(false));
+    test('should returns null', () {
+      expect(Identity.tryParse(''), equals(null));
     });
-    test('should returns true', () {
-      expect(Identity.tryParse('name@domain'), equals(true));
+    test('should returns Identity', () {
+      final result = Identity.tryParse('name@domain');
+      expect(result is Identity, equals(true));
     });
   });
 

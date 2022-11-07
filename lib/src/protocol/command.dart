@@ -26,7 +26,7 @@ class Command extends Envelope {
   dynamic resource;
 
   /// Action to be taken to the resource
-  CommandMethod? method;
+  CommandMethod method;
 
   /// Indicates the status of the action taken to the resource
   CommandStatus? status = CommandStatus.pending;
@@ -42,7 +42,7 @@ class Command extends Envelope {
     final Node? pp,
     final Map<String, dynamic>? metadata,
     this.uri,
-    this.method,
+    required this.method,
     this.reason,
     this.resource,
     this.status,
@@ -54,6 +54,7 @@ class Command extends Envelope {
     Map<String, dynamic> command = {};
 
     command[Envelope.idKey] = id;
+    command[methodKey] = describeEnum(method);
 
     if (from != null) {
       command[Envelope.fromKey] = from.toString();
@@ -69,10 +70,6 @@ class Command extends Envelope {
 
     if (metadata != null) {
       command[Envelope.metadataKey] = metadata;
-    }
-
-    if (method != null) {
-      command[methodKey] = describeEnum(method!);
     }
 
     if (status != null) {
@@ -108,6 +105,9 @@ class Command extends Envelope {
       to: envelope.to,
       pp: envelope.pp,
       metadata: envelope.metadata,
+      method: json[methodKey] != null
+          ? CommandMethod.values.firstWhere((e) => describeEnum(e) == json[methodKey])
+          : CommandMethod.unknown,
     );
 
     if (json.containsKey(reasonKey)) {
@@ -115,13 +115,7 @@ class Command extends Envelope {
     }
 
     if (json.containsKey(statusKey)) {
-      command.status = CommandStatus.values
-          .firstWhere((e) => describeEnum(e) == json[statusKey]);
-    }
-
-    if (json.containsKey(methodKey)) {
-      command.method = CommandMethod.values
-          .firstWhere((e) => describeEnum(e) == json[methodKey]);
+      command.status = CommandStatus.values.firstWhere((e) => describeEnum(e) == json[statusKey]);
     }
 
     if (json.containsKey(uriKey)) {

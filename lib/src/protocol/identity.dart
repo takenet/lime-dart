@@ -38,14 +38,13 @@ class Identity implements IIdentity {
   }
 
   /// Tries to parse the string to a valid Identity.
-  static bool tryParse(
-    String s,
+  static Identity? tryParse(
+    String? s,
   ) {
     try {
-      parse(s);
-      return true;
+      return parse(s);
     } catch (e) {
-      return false;
+      return null;
     }
   }
 

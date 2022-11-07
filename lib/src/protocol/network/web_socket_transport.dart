@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/services.dart';
+
+import '../../utils/lime.utils.dart';
 import '../enums/session_encryption.enum.dart';
 import '../enums/session_compression.enum.dart';
 import '../envelope.dart';
+import '../exceptions/insecure_socket.exception.dart';
 import 'transport.dart';
 
 import 'package:simple_logger/simple_logger.dart';
@@ -11,8 +15,10 @@ import 'package:pretty_json/pretty_json.dart';
 
 /// Allows websocket communication based a Transport base class
 class WebSocketTransport implements Transport {
-  StreamController<Map<String, dynamic>>? stream =
+  StreamController<Map<String, dynamic>>? onEnvelopeStream =
       StreamController<Map<String, dynamic>>();
+
+  StreamController<bool>? onConnectionDoneStream = StreamController<bool>();
 
   /// A websocket for communication
   WebSocket? socket;
@@ -34,7 +40,23 @@ class WebSocketTransport implements Transport {
   }
 
   @override
-  Future<void> open(final String uri) async {
+  Future<void> open(
+    final String uri, {
+    final bool useMtls = false,
+  }) async {
+    HttpClient? customClient;
+
+    if (useMtls) {
+      List<int> keyBytes = await _getKeyBytes();
+      List<int> certificateChainBytes = await _getCertificateChainBytes();
+
+      final context = SecurityContext(withTrustedRoots: true);
+      context.usePrivateKeyBytes(keyBytes);
+      context.useCertificateChainBytes(certificateChainBytes);
+
+      customClient = HttpClient(context: context);
+    }
+
     if (uri.contains('wss://')) {
       encryption = SessionEncryption.tls;
     } else {
@@ -43,33 +65,45 @@ class WebSocketTransport implements Transport {
 
     compression = SessionCompression.none;
 
-    // connect to the socket server
-    socket = await WebSocket.connect(uri, protocols: ['lime']);
-    logger.info('Connected to: $uri');
+    try {
+      // connect to the socket server
+      socket = await WebSocket.connect(uri, customClient: customClient);
+      logger.info('Connected to: $uri');
 
-    // listen for responses from the server
-    socket?.listen(
-      // handle data from the server
-      (data) {
-        final response = jsonDecode(data);
+      // listen for responses from the server
+      socket?.listen(
+        // handle data from the server
+        (data) {
+          final response = jsonDecode(data);
 
-        logger.info('Envelope received: \n' + prettyJson(response, indent: 2));
+          logger.info(
+              'Envelope received: $uri \n' + prettyJson(response, indent: 2));
 
-        onEvelope?.add(response);
-      },
+          onEnvelope?.add(response);
+        },
 
-      // handle errors
-      onError: (error) {
-        logger.shout('Error: $error');
-        socket?.close();
-      },
+        // handle errors
+        onError: (error) {
+          logger.shout('Error: $error');
+          socket?.close();
+        },
 
-      // handle server ending connection
-      onDone: () {
-        logger.warning('Server closed the connection.');
-        socket?.close();
-      },
-    );
+        // handle server ending connection
+        onDone: () {
+          logger.warning('Server closed the connection.');
+          onConnectionDone?.add(true);
+          socket?.close();
+        },
+      );
+    } on WebSocketException catch (e) {
+      if (e.message.endsWith('was not upgraded to websocket')) {
+        throw InsecureSocketException(
+            'This connection is not secure. Please contact the system administrator.');
+      }
+    } on HandshakeException {
+      throw InsecureSocketException(
+          'This connection is not secure. Please contact the system administrator.');
+    }
   }
 
   @override
@@ -97,11 +131,19 @@ class WebSocketTransport implements Transport {
   }
 
   @override
-  get onEvelope => stream;
+  get onEnvelope => onEnvelopeStream;
 
   @override
-  set onEvelope(StreamController<Map<String, dynamic>>? _onEvelope) {
-    stream = _onEvelope;
+  set onEnvelope(StreamController<Map<String, dynamic>>? _onEnvelope) {
+    onEnvelopeStream = _onEnvelope;
+  }
+
+  @override
+  get onConnectionDone => onConnectionDoneStream;
+
+  @override
+  set onConnectionDone(StreamController<bool>? _onConnectionDone) {
+    onConnectionDoneStream = _onConnectionDone;
   }
 
   @override
@@ -109,4 +151,18 @@ class WebSocketTransport implements Transport {
 
   @override
   SessionEncryption? encryption;
+
+  Future<List<int>> _getKeyBytes() async {
+    return (await rootBundle
+            .load('packages/${LimeUtils.packageName}/assets/keys/private.key'))
+        .buffer
+        .asInt8List();
+  }
+
+  Future<List<int>> _getCertificateChainBytes() async {
+    return (await rootBundle.load(
+            'packages/${LimeUtils.packageName}/assets/keys/certificate.cer'))
+        .buffer
+        .asInt8List();
+  }
 }

@@ -1,3 +1,5 @@
+export 'package:lime/src/protocol/extensions/authentication_schema.extension.dart';
+
 /// Defines the valid authentication schemes values.
 enum AuthenticationScheme {
   /// The server doesn't requires a client credential, and provides a temporary identity to the node.
@@ -15,5 +17,7 @@ enum AuthenticationScheme {
   key,
 
   /// Third-party authentication.
-  external
+  external,
+
+  unknown,
 }

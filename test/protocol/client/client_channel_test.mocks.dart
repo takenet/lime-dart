@@ -32,7 +32,6 @@ class _FakeSimpleLogger_1 extends _i1.Fake implements _i3.SimpleLogger {}
 /// See the documentation for Mockito's code generation for more information.
 class MockWebSocketTransport extends _i1.Mock
     implements _i4.WebSocketTransport {
-  @override
   set stream(_i2.StreamController<Map<String, dynamic>>? _stream) =>
       super.noSuchMethod(Invocation.setter(#stream, _stream),
           returnValueForMissingStub: null);
@@ -65,11 +64,11 @@ class MockWebSocketTransport extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#encryption, _encryption),
           returnValueForMissingStub: null);
   @override
-  set onEvelope(_i2.StreamController<Map<String, dynamic>>? _onEvelope) =>
-      super.noSuchMethod(Invocation.setter(#onEvelope, _onEvelope),
+  set onEnvelope(_i2.StreamController<Map<String, dynamic>>? _onEnvelope) =>
+      super.noSuchMethod(Invocation.setter(#onEnvelope, _onEnvelope),
           returnValueForMissingStub: null);
   @override
-  _i2.Future<void> open(String? uri) =>
+  _i2.Future<void> open(String? uri, {bool useMtls = false}) =>
       (super.noSuchMethod(Invocation.method(#open, [uri]),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i2.Future<void>);

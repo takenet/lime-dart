@@ -1,3 +1,8 @@
+## 0.0.17
+
+* Added mTLS support
+* Added onServerCloseConnection Listener
+
 ## 0.0.15
 
 * Removed unused 'timeout' from command class

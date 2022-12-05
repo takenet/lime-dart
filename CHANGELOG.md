@@ -1,3 +1,7 @@
+## 0.0.18
+
+* Changed certificate chain
+
 ## 0.0.17
 
 * Added mTLS support

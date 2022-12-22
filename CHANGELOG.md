@@ -1,3 +1,7 @@
+## 0.0.19
+
+* Fixed to log only on develop mode
+
 ## 0.0.18
 
 * Changed certificate chain

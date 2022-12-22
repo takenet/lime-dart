@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
 
+import '../../services/logger.service.dart';
 import '../../utils/lime.utils.dart';
 import '../enums/session_encryption.enum.dart';
 import '../enums/session_compression.enum.dart';
@@ -10,7 +11,6 @@ import '../envelope.dart';
 import '../exceptions/insecure_socket.exception.dart';
 import 'transport.dart';
 
-import 'package:simple_logger/simple_logger.dart';
 import 'package:pretty_json/pretty_json.dart';
 
 /// Allows websocket communication based a Transport base class
@@ -30,14 +30,7 @@ class WebSocketTransport implements Transport {
   @override
   StreamController<bool> onClose = StreamController<bool>();
 
-  final logger = SimpleLogger();
-
-  WebSocketTransport() {
-    logger.setLevel(
-      Level.INFO,
-      includeCallerInfo: true,
-    );
-  }
+  final logger = LoggerService();
 
   @override
   Future<void> open(

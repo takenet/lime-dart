@@ -10,7 +10,7 @@ import 'package:lime/src/protocol/enums/session_encryption.enum.dart' as _i7;
 import 'package:lime/src/protocol/envelope.dart' as _i8;
 import 'package:lime/src/protocol/network/web_socket_transport.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:simple_logger/simple_logger.dart' as _i3;
+import 'package:lime/src/services/logger.service.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -25,7 +25,7 @@ import 'package:simple_logger/simple_logger.dart' as _i3;
 class _FakeStreamController_0<T> extends _i1.Fake
     implements _i2.StreamController<T> {}
 
-class _FakeSimpleLogger_1 extends _i1.Fake implements _i3.SimpleLogger {}
+class _FakeSimpleLogger_1 extends _i1.Fake implements _i3.LoggerService {}
 
 /// A class which mocks [WebSocketTransport].
 ///
@@ -53,8 +53,9 @@ class MockWebSocketTransport extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#onClose, _onClose),
           returnValueForMissingStub: null);
   @override
-  _i3.SimpleLogger get logger => (super.noSuchMethod(Invocation.getter(#logger),
-      returnValue: _FakeSimpleLogger_1()) as _i3.SimpleLogger);
+  _i3.LoggerService get logger =>
+      (super.noSuchMethod(Invocation.getter(#logger),
+          returnValue: _FakeSimpleLogger_1()) as _i3.LoggerService);
   @override
   set compression(_i6.SessionCompression? _compression) =>
       super.noSuchMethod(Invocation.setter(#compression, _compression),

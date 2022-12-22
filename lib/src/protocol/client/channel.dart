@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:simple_logger/simple_logger.dart';
 
+import '../../services/logger.service.dart';
 import '../command.dart';
 import '../enums/command_method.enum.dart';
 import '../enums/command_status.enum.dart';
@@ -38,18 +38,13 @@ abstract class Channel {
   /// Current session state
   SessionState? state;
 
-  final logger = SimpleLogger();
+  final logger = LoggerService();
 
   Channel({
     required this.transport,
     required this.autoReplyPings,
     required this.autoNotifyReceipt,
   }) {
-    logger.setLevel(
-      Level.INFO,
-      includeCallerInfo: true,
-    );
-
     state = SessionState.isNew;
 
     // Start listening to the stream
@@ -57,10 +52,12 @@ abstract class Channel {
       (event) {
         if (event.containsKey('state')) {
           logger.info('Received envelope is a Session');
+
           final session = Session.fromJson(event);
           onSession(session);
         } else if (event.containsKey('method')) {
           logger.info('Received envelope is a Command');
+
           final command = Command.fromJson(event);
 
           if (autoReplyPings &&
@@ -84,11 +81,13 @@ abstract class Channel {
           onCommand(command);
         } else if (event.containsKey('content')) {
           logger.info('Received envelope is a Message');
+
           final message = Message.fromJson(event);
           _notifyMessage(message);
           onMessage(message);
         } else if (event.containsKey('event')) {
           logger.info('Received envelope is a Notification');
+
           final notification = Notification.fromJson(event);
           onNotification(notification);
         }

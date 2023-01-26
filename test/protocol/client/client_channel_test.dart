@@ -4,8 +4,14 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'client_channel_test.mocks.dart';
 
-@GenerateMocks([],
-    customMocks: [MockSpec<WebSocketTransport>(returnNullOnMissingStub: true)])
+@GenerateMocks(
+  [],
+  customMocks: [
+    MockSpec<WebSocketTransport>(
+      onMissingStub: OnMissingStub.returnDefault,
+    ),
+  ],
+)
 void main() {
   final mockWebSocketTransport = MockWebSocketTransport();
 

@@ -39,7 +39,7 @@ class ClientChannel extends Channel {
   final onSessionFailed = StreamController<Session>();
 
   /// Exposes a [StreamController] to allow listening when the server closes the connection
-  final onConnectionDone = StreamController<bool>();
+  var onConnectionDone = StreamController<bool>();
 
   /// A function that will be completed when  a [Session] of type [SessionState.authenticating] is received
   late Function(Session) _onSessionAuthenticating;

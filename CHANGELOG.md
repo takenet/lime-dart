@@ -1,3 +1,7 @@
+## 0.0.20
+
+* Changed onConnectionDone listener to be mutable instead of final.
+
 ## 0.0.19
 
 * Fixed to log only on develop mode

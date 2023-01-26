@@ -1,6 +1,6 @@
 name: lime
 description: LIME Protocol for Dart/Flutter - A lightweight messaging library
-version: 0.0.19
+version: 0.0.20
 homepage: https://limeprotocol.org/
 repository: https://github.com/takenet/lime-dart
 

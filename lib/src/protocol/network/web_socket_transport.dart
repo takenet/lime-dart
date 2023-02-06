@@ -18,10 +18,14 @@ class WebSocketTransport implements Transport {
   StreamController<Map<String, dynamic>>? onEnvelopeStream =
       StreamController<Map<String, dynamic>>();
 
-  StreamController<bool>? onConnectionDoneStream = StreamController<bool>();
-
-  /// A websocket for communication
+  @override
   WebSocket? socket;
+
+  @override
+  SessionCompression? compression;
+
+  @override
+  SessionEncryption? encryption;
 
   /// Allows saving the Session id
   String? sessionId;
@@ -29,6 +33,8 @@ class WebSocketTransport implements Transport {
   /// A [StreamController] to allow listening when the close method is executed
   @override
   StreamController<bool> onClose = StreamController<bool>();
+
+  StreamController<bool>? onConnectionDoneStream = StreamController<bool>();
 
   final logger = LoggerService();
 
@@ -138,12 +144,6 @@ class WebSocketTransport implements Transport {
   set onConnectionDone(StreamController<bool>? _onConnectionDone) {
     onConnectionDoneStream = _onConnectionDone;
   }
-
-  @override
-  SessionCompression? compression;
-
-  @override
-  SessionEncryption? encryption;
 
   Future<List<int>> _getKeyBytes() async {
     return (await rootBundle

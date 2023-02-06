@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import '../enums/session_compression.enum.dart';
 import '../enums/session_encryption.enum.dart';
@@ -19,6 +20,9 @@ abstract class Transport extends EnvelopeListener {
 
   /// Allows sends an envelope to the connected node.
   void send(Envelope envelope);
+
+  /// A websocket for communication
+  WebSocket? socket;
 
   /// Enumerates the supported compression options for the transport.
   SessionCompression? compression;

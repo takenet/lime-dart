@@ -1,3 +1,7 @@
+## 0.0.21
+
+* Override socket field in WebSocketTransport class
+
 ## 0.0.20
 
 * Changed onConnectionDone listener to be mutable instead of final.

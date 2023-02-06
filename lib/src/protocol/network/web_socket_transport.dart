@@ -94,6 +94,8 @@ class WebSocketTransport implements Transport {
           socket?.close();
         },
       );
+
+      socket?.pingInterval = const Duration(seconds: 5);
     } on WebSocketException catch (e) {
       if (e.message.endsWith('was not upgraded to websocket')) {
         throw InsecureSocketException(

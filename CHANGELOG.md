@@ -1,3 +1,7 @@
+## 0.0.22
+
+* Set the whersocket ping interval 
+
 ## 0.0.21
 
 * Override socket field in WebSocketTransport class

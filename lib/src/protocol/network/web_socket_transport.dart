@@ -84,14 +84,14 @@ class WebSocketTransport implements Transport {
         // handle errors
         onError: (error) {
           logger.shout('Error: $error');
-          socket?.close();
+          close();
         },
 
         // handle server ending connection
         onDone: () {
           logger.warning('Server closed the connection.');
           onConnectionDone?.add(true);
-          socket?.close();
+          close();
         },
       );
 
@@ -109,7 +109,7 @@ class WebSocketTransport implements Transport {
 
   @override
   Future<void> close() async {
-    socket?.close();
+    await socket?.close();
     onClose.sink.add(true);
   }
 

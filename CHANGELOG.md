@@ -1,3 +1,7 @@
+## 0.0.23
+
+* Fix WebSocket closure
+
 ## 0.0.22
 
 * Set the whersocket ping interval 

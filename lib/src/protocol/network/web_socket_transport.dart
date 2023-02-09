@@ -84,14 +84,14 @@ class WebSocketTransport implements Transport {
         // handle errors
         onError: (error) {
           logger.shout('Error: $error');
-          socket?.close();
+          close();
         },
 
         // handle server ending connection
         onDone: () {
           logger.warning('Server closed the connection.');
           onConnectionDone?.add(true);
-          socket?.close();
+          close();
         },
       );
 

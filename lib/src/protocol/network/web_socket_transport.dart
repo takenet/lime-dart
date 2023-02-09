@@ -109,7 +109,7 @@ class WebSocketTransport implements Transport {
 
   @override
   Future<void> close() async {
-    socket?.close();
+    await socket?.close();
     onClose.sink.add(true);
   }
 

@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/services.dart';
+import 'package:pretty_json/pretty_json.dart';
 
 import '../../services/logger.service.dart';
 import '../../utils/lime.utils.dart';
-import '../enums/session_encryption.enum.dart';
 import '../enums/session_compression.enum.dart';
+import '../enums/session_encryption.enum.dart';
 import '../envelope.dart';
 import '../exceptions/insecure_socket.exception.dart';
 import 'transport.dart';
-
-import 'package:pretty_json/pretty_json.dart';
 
 /// Allows websocket communication based a Transport base class
 class WebSocketTransport implements Transport {
@@ -43,21 +43,29 @@ class WebSocketTransport implements Transport {
     final String uri, {
     final bool useMtls = false,
   }) async {
-    HttpClient? customClient;
+    SecurityContext? securityContext;
 
     if (useMtls) {
       List<int> keyBytes = await _getKeyBytes();
       List<int> certificateChainBytes = await _getCertificateChainBytes();
 
-      final context = SecurityContext(withTrustedRoots: true);
-      context.usePrivateKeyBytes(keyBytes);
-      context.useCertificateChainBytes(certificateChainBytes);
-
-      customClient = HttpClient(context: context);
+      securityContext = SecurityContext(withTrustedRoots: true);
+      securityContext.usePrivateKeyBytes(keyBytes);
+      securityContext.useCertificateChainBytes(certificateChainBytes);
     }
+
+    final customClient = HttpClient(
+      context: securityContext,
+    );
 
     if (uri.contains('wss://')) {
       encryption = SessionEncryption.tls;
+
+      // Some WebSocket URI prefix has _ (underscore) which might throw
+      // Handshake Hostname Mismatch exception because it cannot be
+      // authenticated by any trusted root certificates.
+      customClient.badCertificateCallback =
+          (_, host, __) => host.contains('_') && host.endsWith('.ws.blip.ai');
     } else {
       encryption = SessionEncryption.none;
     }
@@ -66,7 +74,11 @@ class WebSocketTransport implements Transport {
 
     try {
       // connect to the socket server
-      socket = await WebSocket.connect(uri, customClient: customClient);
+      socket = await WebSocket.connect(
+        uri,
+        customClient: customClient,
+      );
+
       logger.info('Connected to: $uri');
 
       // listen for responses from the server

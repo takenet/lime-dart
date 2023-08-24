@@ -49,9 +49,9 @@ class WebSocketTransport implements Transport {
       List<int> keyBytes = await _getKeyBytes();
       List<int> certificateChainBytes = await _getCertificateChainBytes();
 
-      securityContext = SecurityContext(withTrustedRoots: true);
-      securityContext.usePrivateKeyBytes(keyBytes);
-      securityContext.useCertificateChainBytes(certificateChainBytes);
+      securityContext = SecurityContext(withTrustedRoots: true)
+        ..usePrivateKeyBytes(keyBytes)
+        ..useCertificateChainBytes(certificateChainBytes);
     }
 
     final customClient = HttpClient(

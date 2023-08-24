@@ -1,3 +1,7 @@
+## 0.0.24
+
+* Fix connection when the WebSocket URI prefix has ```_``` (underscore).
+
 ## 0.0.23
 
 * Fix WebSocket closure

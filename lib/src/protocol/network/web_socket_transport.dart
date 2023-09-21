@@ -88,7 +88,7 @@ class WebSocketTransport implements Transport {
           final response = jsonDecode(data);
 
           logger.info(
-              'Envelope received: $uri \n' + prettyJson(response, indent: 2));
+              'Envelope received: $uri \n${prettyJson(response, indent: 2)}');
 
           onEnvelope?.add(response);
         },
@@ -134,7 +134,7 @@ class WebSocketTransport implements Transport {
     socket?.add(encode);
 
     logger
-        .info('Envelope send: \n' + prettyJson(jsonDecode(encode), indent: 2));
+        .info('Envelope send: \n${prettyJson(jsonDecode(encode), indent: 2)}');
   }
 
   void ensureSocketOpen() {
@@ -147,16 +147,16 @@ class WebSocketTransport implements Transport {
   get onEnvelope => onEnvelopeStream;
 
   @override
-  set onEnvelope(StreamController<Map<String, dynamic>>? _onEnvelope) {
-    onEnvelopeStream = _onEnvelope;
+  set onEnvelope(StreamController<Map<String, dynamic>>? onEnvelope) {
+    onEnvelopeStream = onEnvelope;
   }
 
   @override
   get onConnectionDone => onConnectionDoneStream;
 
   @override
-  set onConnectionDone(StreamController<bool>? _onConnectionDone) {
-    onConnectionDoneStream = _onConnectionDone;
+  set onConnectionDone(StreamController<bool>? onConnectionDone) {
+    onConnectionDoneStream = onConnectionDone;
   }
 
   Future<List<int>> _getKeyBytes() async {

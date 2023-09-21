@@ -8,7 +8,6 @@ import '../node.dart';
 import '../notification.dart';
 import '../security/authentication.dart';
 import '../session.dart';
-
 import 'channel.dart';
 
 /// Defines a communication channel between a node and a server.
@@ -63,7 +62,7 @@ class ClientChannel extends Channel {
   }
 
   /// Send a [Session] type [Envelope] with state [SessionState.finishing] to end the communication
-  Future<Session> sendFinishingSession() async {
+  Future<Session?> sendFinishingSession() async {
     if (state != SessionState.established) {
       throw Exception('Cannot finish a session in the $state state');
     }
@@ -84,10 +83,10 @@ class ClientChannel extends Channel {
           return c.future;
         }),
         Future(() {
-          final c = Completer<Session>();
+          final c = Completer<Session?>();
 
           Future.delayed(const Duration(milliseconds: 6000), () {
-            return c.completeError('Timeout reached - sendFinishingSession');
+            return c.complete();
           });
 
           return c.future;

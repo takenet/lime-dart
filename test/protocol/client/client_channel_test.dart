@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lime/lime.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+
 import 'client_channel_test.mocks.dart';
 
 @GenerateMocks(
@@ -47,11 +48,13 @@ void main() {
       clientChannel.state = SessionState.authenticating;
 
       clientChannel.authenticateSession(
-          'name@domain',
-          'instance',
-          ExternalAuthentication(
-              token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjRlY2RmZmV...',
-              issuer: 'account.blip.ai'));
+        'name@domain',
+        'instance',
+        ExternalAuthentication(
+          token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjRlY2RmZmV...',
+          issuer: 'account.blip.ai',
+        ),
+      );
       verify(mockWebSocketTransport.send(any)).called(1);
     });
   });

@@ -1,6 +1,6 @@
+import '../extensions/string.extension.dart';
 import 'authentication.dart';
 import 'enums/authentication_scheme.enum.dart';
-import '../extensions/string.extension.dart';
 
 /// Defines a authentication scheme that uses a key for authentication.
 /// Should be used only with encrypted sessions.
@@ -14,8 +14,8 @@ class KeyAuthentication extends Authentication {
   KeyAuthentication({this.key}) : super(AuthenticationScheme.key);
 
   /// Set a plain key to a Base64 representation.
-  void setToBase64Key(final String? _key) {
-    key = _key?.toBase64();
+  void setToBase64Key(final String? key) {
+    this.key = key?.toBase64();
   }
 
   /// Gets the plain key decoded from the Base64 representation.

@@ -1,3 +1,7 @@
+## 0.0.25
+
+* Fix ```sendFinishingSession``` method to not throw exception on timeout
+
 ## 0.0.24
 
 * Fix connection when the WebSocket URI prefix has ```_``` (underscore).

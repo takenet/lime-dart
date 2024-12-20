@@ -57,7 +57,7 @@ jobs:
     steps:
       - run: echo ${{needs.auto-gen-tag.outputs.tag}}
       - name: Download changelog
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: changelog
       - name: Draft release with changelog

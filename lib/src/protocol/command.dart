@@ -1,11 +1,9 @@
-import 'package:flutter/foundation.dart';
-import 'guid.dart';
-import 'envelope.dart';
-import 'message.dart';
-import 'node.dart';
-import 'reason.dart';
 import 'enums/command_method.enum.dart';
 import 'enums/command_status.enum.dart';
+import 'envelope.dart';
+import 'guid.dart';
+import 'message.dart';
+import 'reason.dart';
 
 /// Allows the manipulation of node resources, like server session parameters or information related to the network nodes.
 class Command extends Envelope {
@@ -37,24 +35,24 @@ class Command extends Envelope {
   /// Initializes a new instance of the Command class.
   Command({
     final String? id,
-    final Node? from,
-    final Node? to,
-    final Node? pp,
-    final Map<String, dynamic>? metadata,
+    super.from,
+    super.to,
+    super.pp,
+    super.metadata,
     this.uri,
     required this.method,
     this.reason,
     this.resource,
     this.status,
     this.type,
-  }) : super(id: id ?? guid(), from: from, to: to, pp: pp, metadata: metadata);
+  }) : super(id: id ?? guid());
 
   /// Allows converting a [Command] object to a [Map] collection of key/value pairs
   Map<String, dynamic> toJson() {
     Map<String, dynamic> command = {};
 
     command[Envelope.idKey] = id;
-    command[methodKey] = describeEnum(method);
+    command[methodKey] = method.name;
 
     if (from != null) {
       command[Envelope.fromKey] = from.toString();
@@ -73,7 +71,7 @@ class Command extends Envelope {
     }
 
     if (status != null) {
-      command[statusKey] = describeEnum(status!);
+      command[statusKey] = status!.name;
     }
 
     if (uri != null) {
@@ -106,7 +104,7 @@ class Command extends Envelope {
       pp: envelope.pp,
       metadata: envelope.metadata,
       method: json[methodKey] != null
-          ? CommandMethod.values.firstWhere((e) => describeEnum(e) == json[methodKey])
+          ? CommandMethod.values.firstWhere((e) => e.name == json[methodKey])
           : CommandMethod.unknown,
     );
 
@@ -115,7 +113,8 @@ class Command extends Envelope {
     }
 
     if (json.containsKey(statusKey)) {
-      command.status = CommandStatus.values.firstWhere((e) => describeEnum(e) == json[statusKey]);
+      command.status =
+          CommandStatus.values.firstWhere((e) => e.name == json[statusKey]);
     }
 
     if (json.containsKey(uriKey)) {

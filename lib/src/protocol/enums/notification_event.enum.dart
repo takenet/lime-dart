@@ -18,6 +18,9 @@ enum NotificationEvent {
   /// A problem occurred during the processing of the message.
   failed,
 
+  /// The message is being sent
+  sending,
+
   /// The message format was validated by the server.
   @Deprecated("This specific event should not be sent anymore")
   validated,

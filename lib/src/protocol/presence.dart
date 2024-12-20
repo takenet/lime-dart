@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 
 import 'document.dart';
 import 'media_type.dart';
@@ -45,11 +44,11 @@ class Presence extends Document {
     Map<String, dynamic> presence = {};
 
     if (status != null) {
-      presence['status'] = describeEnum(status!);
+      presence['status'] = status!.name;
     }
 
     if (routingRule != null) {
-      presence['routingRule'] = describeEnum(routingRule!);
+      presence['routingRule'] = routingRule!.name;
     }
 
     if (message != null) {

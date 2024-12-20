@@ -4,7 +4,11 @@ import 'interfaces/inode.dart';
 /// Represents an element of a network.
 class Node extends Identity implements INode {
   /// Initializes a new instance of the node class.
-  Node({String? name, String? domain, this.instance}) : super(name: name, domain: domain);
+  Node({
+    super.name,
+    super.domain,
+    this.instance,
+  });
 
   /// The name of the instance used by the node to connect to the network.
   @override
@@ -20,19 +24,27 @@ class Node extends Identity implements INode {
 
   @override
   String toString() {
-    return instance == null ? super.toString() : '${super.toString()}/$instance';
+    return instance == null
+        ? super.toString()
+        : '${super.toString()}/$instance';
   }
 
   bool _equals(other) {
-    final node = other as Node?;
+    final stringNode = other?.toString();
+
+    final node = tryParse(stringNode) ? parse(stringNode) : null;
 
     if (node == null) return false;
 
-    return ((name == null && node.name == null) || (name != null && name?.toLowerCase() == node.name?.toLowerCase())) &&
+    return ((name == null && node.name == null) ||
+            (name != null &&
+                name?.toLowerCase() == node.name?.toLowerCase())) &&
         ((domain == null && node.domain == null) ||
-            (domain != null && domain?.toLowerCase() == node.domain?.toLowerCase())) &&
+            (domain != null &&
+                domain?.toLowerCase() == node.domain?.toLowerCase())) &&
         ((instance == null && node.instance == null) ||
-            (instance != null && instance?.toLowerCase() == node.instance?.toLowerCase()));
+            (instance != null &&
+                instance?.toLowerCase() == node.instance?.toLowerCase()));
   }
 
   /// Parses the string to a valid Node.
@@ -47,12 +59,14 @@ class Node extends Identity implements INode {
     return Node(
         name: identity.name,
         domain: identity.domain,
-        instance: s!.length > identityString.length ? s.substring(identityString.length + 1) : null);
+        instance: s!.length > identityString.length
+            ? s.substring(identityString.length + 1)
+            : null);
   }
 
   /// Tries to parse the string to a valid Node.
   static bool tryParse(
-    String s,
+    String? s,
   ) {
     try {
       parse(s);
@@ -69,6 +83,8 @@ class Node extends Identity implements INode {
 
   /// Indicates if the node is a complete representation,
   bool isComplete() {
-    return !['', null].contains(name) && !['', null].contains(domain) && !['', null].contains(instance);
+    return !['', null].contains(name) &&
+        !['', null].contains(domain) &&
+        !['', null].contains(instance);
   }
 }

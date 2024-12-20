@@ -1,6 +1,5 @@
 import 'envelope.dart';
 import 'guid.dart';
-import 'node.dart';
 
 /// Provides the transport of a content between nodes in a network.
 class Message extends Envelope {
@@ -10,13 +9,13 @@ class Message extends Envelope {
   /// Initializes a new instance of the Message class.
   Message({
     final String? id,
-    final Node? from,
-    final Node? to,
-    final Node? pp,
-    Map<String, dynamic>? metadata,
+    super.from,
+    super.to,
+    super.pp,
+    super.metadata,
     this.content,
     this.type,
-  }) : super(id: id ?? guid(), from: from, to: to, pp: pp, metadata: metadata);
+  }) : super(id: id ?? guid());
 
   ///  MIME declaration of the content type of the message.
   String? type;

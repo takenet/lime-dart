@@ -14,12 +14,10 @@ import 'channel.dart';
 class ClientChannel extends Channel {
   ClientChannel(
     Transport transport, {
-    final bool autoReplyPings = true,
-    final bool autoNotifyReceipt = false,
+    super.autoReplyPings = true,
+    super.autoNotifyReceipt = false,
   }) : super(
           transport: transport,
-          autoReplyPings: autoReplyPings,
-          autoNotifyReceipt: autoNotifyReceipt,
         );
 
   /// Exposes a [StreamController] to allow listening when a new [Notification] is received by the channel

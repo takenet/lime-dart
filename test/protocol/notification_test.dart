@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_test/flutter_test.dart';
-
-import 'package:lime/lime.dart';
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:lime/lime.dart';
 
 void main() async {
   const String jsonPath = "test_resources/notification.json";
@@ -21,7 +20,7 @@ void main() async {
     test('should set the Notification properties ', () async {
       final notification = Notification.fromJson(json);
 
-      expect(describeEnum(notification.event!), equals(json['event']));
+      expect(notification.event!.name, equals(json['event']));
       expect(notification.reason!.description,
           equals(json['reason']['description']));
       expect(notification.reason!.code, equals(json['reason']['code']));
@@ -39,7 +38,7 @@ void main() async {
       final notification = Notification.fromJson(json);
       final jsonDoc = notification.toJson();
 
-      expect(jsonDoc['event'], equals(describeEnum(notification.event!)));
+      expect(jsonDoc['event'], equals(notification.event!.name));
       expect(jsonDoc['reason']['description'],
           equals(notification.reason!.description));
       expect(jsonDoc['reason']['code'], equals(notification.reason!.code));

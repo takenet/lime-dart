@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_test/flutter_test.dart';
-
-import 'package:lime/lime.dart';
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:lime/lime.dart';
 
 void main() async {
   const String jsonPath = "test_resources/session.json";
@@ -21,7 +20,7 @@ void main() async {
     test('should set the Session properties ', () async {
       final session = Session.fromJson(json);
 
-      expect(describeEnum(session.state!), equals(json['state']));
+      expect(session.state!.name, equals(json['state']));
       expect(
           session.reason!.description, equals(json['reason']['description']));
       expect(session.reason!.code, equals(json['reason']['code']));

@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_test/flutter_test.dart';
-
-import 'package:lime/lime.dart';
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:lime/lime.dart';
 
 void main() {
   const String jsonPath = "test_resources/command.json";
@@ -24,9 +23,9 @@ void main() {
       final command = Command.fromJson(json);
 
       expect(command.metadata, equals(json['metadata']));
-      expect(describeEnum(command.method), equals(json['method']));
+      expect(command.method.name, equals(json['method']));
       expect(command.resource, equals(json['resource']));
-      expect(describeEnum(command.status!), equals(json['status']));
+      expect(command.status!.name, equals(json['status']));
       expect(command.type, equals(json['type']));
       expect(command.uri, equals(json['uri']));
       expect(
@@ -47,9 +46,9 @@ void main() {
       final jsonDoc = command.toJson();
 
       expect(jsonDoc['metadata'], equals(command.metadata));
-      expect(jsonDoc['method'], equals(describeEnum(command.method)));
+      expect(jsonDoc['method'], equals(command.method.name));
       expect(jsonDoc['resource'], equals(command.resource));
-      expect(jsonDoc['status'], equals(describeEnum(command.status!)));
+      expect(jsonDoc['status'], equals(command.status!.name));
       expect(jsonDoc['type'], equals(command.type));
       expect(jsonDoc['uri'], equals(command.uri));
       expect(jsonDoc['reason']['description'],

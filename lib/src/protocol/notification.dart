@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'enums/notification_event.enum.dart';
 import 'envelope.dart';
 import 'guid.dart';
-import 'node.dart';
 import 'reason.dart';
 
 /// Transports information about events associated to a message in a session.
@@ -13,13 +11,13 @@ class Notification extends Envelope {
 
   Notification({
     final String? id,
-    final Node? from,
-    final Node? to,
-    final Node? pp,
-    final Map<String, dynamic>? metadata,
+    super.from,
+    super.to,
+    super.pp,
+    super.metadata,
     this.event,
     this.reason,
-  }) : super(id: id ?? guid(), from: from, to: to, pp: pp, metadata: metadata);
+  }) : super(id: id ?? guid());
 
   /// Related event to the notification
   NotificationEvent? event;
@@ -50,7 +48,7 @@ class Notification extends Envelope {
     }
 
     if (event != null) {
-      notification[eventKey] = describeEnum(event!);
+      notification[eventKey] = event!.name;
     }
 
     if (reason != null) {
@@ -77,7 +75,7 @@ class Notification extends Envelope {
     }
     if (json.containsKey(eventKey)) {
       notification.event = NotificationEvent.values
-          .firstWhere((e) => describeEnum(e) == json[eventKey]);
+          .firstWhere((e) => e.name == json[eventKey]);
     }
 
     return notification;

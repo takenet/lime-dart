@@ -1,3 +1,7 @@
+## 0.0.26
+
+* Add support to last stable flutter version
+
 ## 0.0.25
 
 * Fix ```sendFinishingSession``` method to not throw exception on timeout

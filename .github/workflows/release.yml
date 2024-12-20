@@ -44,7 +44,7 @@ jobs:
           future_release: ${{ needs.auto-gen-tag.outputs.tag }}
           since_tag: ${{ steps.get_latest_release.outputs.release }}
       - name: Upload changelog
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: changelog
           path: CHANGELOG.md

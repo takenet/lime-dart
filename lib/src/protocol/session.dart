@@ -1,16 +1,14 @@
-import 'package:flutter/foundation.dart';
-import 'envelope.dart';
-import 'guid.dart';
-import 'node.dart';
-import 'reason.dart';
-import 'security/enums/authentication_scheme.enum.dart';
-import 'security/external_authentication.dart';
-import 'security/key_authentication.dart';
-import 'security/authentication.dart';
-import 'security/plain_authentication.dart';
 import 'enums/session_compression.enum.dart';
 import 'enums/session_encryption.enum.dart';
 import 'enums/session_state.enum.dart';
+import 'envelope.dart';
+import 'guid.dart';
+import 'reason.dart';
+import 'security/authentication.dart';
+import 'security/enums/authentication_scheme.enum.dart';
+import 'security/external_authentication.dart';
+import 'security/key_authentication.dart';
+import 'security/plain_authentication.dart';
 
 /// Allows the configuration and establishment of the communication channel between nodes.
 class Session extends Envelope {
@@ -28,19 +26,15 @@ class Session extends Envelope {
   /// Initializes a new instance of the Session class.
   Session(
       {final String? id,
-      final Node? from,
-      final Node? to,
-      final Node? pp,
-      final Map<String, String>? metadata,
+      super.from,
+      super.to,
+      super.pp,
+      Map<String, String>? super.metadata,
       this.state,
       this.scheme,
       this.authentication})
       : super(
           id: id ?? guid(),
-          from: from,
-          to: to,
-          pp: pp,
-          metadata: metadata,
         );
 
   /// Informs or changes the state of a session.
@@ -91,7 +85,7 @@ class Session extends Envelope {
 
     if (state != null) {
       session[stateKey] =
-          describeEnum(state!) == 'isNew' ? 'new' : describeEnum(state!);
+          state!.name == 'isNew' ? 'new' : state!.name;
     }
 
     session[Envelope.idKey] = id;
@@ -113,7 +107,7 @@ class Session extends Envelope {
     }
 
     if (scheme != null) {
-      session[schemeKey] = describeEnum(scheme!);
+      session[schemeKey] = scheme!.name;
     }
 
     if (authentication != null) {
@@ -125,7 +119,7 @@ class Session extends Envelope {
         session[authenticationKey] = {
           "token": externalAuth.token,
           "issuer": externalAuth.issuer,
-          "scheme": describeEnum(externalAuth.scheme)
+          "scheme": externalAuth.scheme.name
         };
       } else if (authentication is PlainAuthentication) {
         final plainAuth = authentication as PlainAuthentication;
@@ -148,14 +142,14 @@ class Session extends Envelope {
     );
 
     if (json.containsKey(stateKey)) {
-      session.state = SessionState.values.firstWhere((e) => describeEnum(e) == json[stateKey]);
+      session.state = SessionState.values.firstWhere((e) => e.name == json[stateKey]);
     }
 
     if (json.containsKey(schemeOptionsKey)) {
       final schemeOptionsList = json[schemeOptionsKey] as List;
       final schemeOptions = schemeOptionsList
           .map((e) => AuthenticationScheme.values
-              .firstWhere((e2) => describeEnum(e2) == e))
+              .firstWhere((e2) => e2.name == e))
           .toList();
       session.schemeOptions = schemeOptions;
     }
